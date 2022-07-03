@@ -1,2 +1,2 @@
 # ZombieLand
-a first person (splitscreen) zombie shooter
+a first person (splitscreen) zombie - survival shooter

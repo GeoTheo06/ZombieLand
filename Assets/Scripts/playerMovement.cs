@@ -7,7 +7,7 @@ public class playerMovement : MonoBehaviour
 	public CharacterController characterController;
 	float speed = 5;
 	float playerGravity = -40;
-	float jumpHeight = 4;
+	float jumpHeight = 3;
 
 	public Transform groundCheck;
 	public Transform ceilingCheck;
@@ -28,8 +28,6 @@ public class playerMovement : MonoBehaviour
 		isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 		hitCeiling = Physics.CheckSphere(ceilingCheck.position, groundDistance, groundMask);
 
-		playerMotion.SetBool("isGrounded", isGrounded);
-
 		//falling
 		if (isGrounded && velocity.y < 0) {
 			velocity.y = -2;
@@ -43,12 +41,20 @@ public class playerMovement : MonoBehaviour
 
 		//player starts pressing buttons to move
 		if (Input.GetKey(KeyCode.A)) {
-			x = -1;
-			playerMotion.SetBool("strafeWalking", true);
+				x = -1;
+			if (isGrounded) {
+				playerMotion.SetBool("strafeWalking", true);
+			} else {
+				playerMotion.SetBool("strafeWalking", false);
+			}
 		}
 		if (Input.GetKey(KeyCode.D)) {
-			x = 1;
-			playerMotion.SetBool("strafeWalking", true);
+				x = 1;
+			if (isGrounded) {
+				playerMotion.SetBool("strafeWalking", true);
+			} else {
+				playerMotion.SetBool("strafeWalking", false);
+			}
 		}
 		if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D)) {
 			x = 0;
@@ -56,12 +62,20 @@ public class playerMovement : MonoBehaviour
 		}
 
 		if (Input.GetKey(KeyCode.W)) {
-			z = 1;
-			playerMotion.SetBool("walkingStraight", true);
+				z = 1;
+			if (isGrounded) {
+				playerMotion.SetBool("walkingStraight", true);
+			} else {
+				playerMotion.SetBool("walkingStraight", false);
+			}
 		}
 		if (Input.GetKey(KeyCode.S)) {
-			z = -1;
-			playerMotion.SetBool("walkingStraight", true);
+				z = -1;
+			if (isGrounded) {
+				playerMotion.SetBool("walkingStraight", true);
+			} else {
+				playerMotion.SetBool("walkingStraight", false);
+			}
 		}
 		if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S)) {
 			z = 0;

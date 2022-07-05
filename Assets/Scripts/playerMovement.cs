@@ -27,7 +27,7 @@ public class playerMovement : MonoBehaviour
 	private void Update() {
 		isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 		hitCeiling = Physics.CheckSphere(ceilingCheck.position, groundDistance, groundMask);
-
+		playerMotion.SetBool("isGrounded", isGrounded);
 		//falling
 		if (isGrounded && velocity.y < 0) {
 			velocity.y = -2;
@@ -124,8 +124,10 @@ public class playerMovement : MonoBehaviour
 		//spint
 		if (Input.GetKeyDown(KeyCode.LeftShift)) {
 			speed += sprintSpeed;
+			playerMotion.SetBool("isRunning", true);
 		} else if (Input.GetKeyUp(KeyCode.LeftShift)) {
 			speed -= sprintSpeed;
+			playerMotion.SetBool("isRunning", false);
 		}
 	}
 }

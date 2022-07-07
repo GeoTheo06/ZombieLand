@@ -16,7 +16,7 @@ public class zombiePathfinder : MonoBehaviour
 		GetComponent<NavMeshAgent>().destination = player.transform.position;
 		if (GetComponent<NavMeshAgent>().velocity.magnitude > 1) {
 			enemyAnimator.SetBool("isRunning", true);
-		} else {
+		} else if () {
 			enemyAnimator.SetBool("isRunning", false);
 		}
 	}

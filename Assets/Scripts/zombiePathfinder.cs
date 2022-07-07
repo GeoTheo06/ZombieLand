@@ -10,7 +10,14 @@ public class zombiePathfinder : MonoBehaviour
 		player = GameObject.FindGameObjectWithTag("Player");
 	}
 
+	public Animator enemyAnimator;
+
 	private void FixedUpdate() {
 		GetComponent<NavMeshAgent>().destination = player.transform.position;
+		if (GetComponent<NavMeshAgent>().velocity.magnitude > 1) {
+			enemyAnimator.SetBool("isRunning", true);
+		} else {
+			enemyAnimator.SetBool("isRunning", false);
+		}
 	}
 }

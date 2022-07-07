@@ -111,7 +111,6 @@ public class playerMovement : MonoBehaviour
 
 		//if player presses forward and sideways button at the same time, he will gain speed because move will be equal to 2 (x + z = 1 + 1 = 2) so here: characterController.Move(move * speed * Time.deltaTime); the speed of the character will be 2 times greater than the maximum allowed speed.
 		Vector3 move = transform.right * x + transform.forward* z;
-		Debug.Log(move);
 		if (move.x > 1) {
 			move.x -= 0.5f;
 		} else if (move.x < -1) {

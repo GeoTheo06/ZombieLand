@@ -5,19 +5,20 @@ using UnityEngine.AI;
 
 public class zombiePathfinder : MonoBehaviour
 {
+	public NavMeshAgent zombiePathFinder;
 	public GameObject player;
+
+	public float zombieSpeed;
+	public float defaultZombieSpeed = 9;
 	private void Start() {
-		player = GameObject.FindGameObjectWithTag("Player");
+		zombieSpeed = defaultZombieSpeed;
 	}
 
-	public Animator enemyAnimator;
+	
 
 	private void FixedUpdate() {
-		GetComponent<NavMeshAgent>().destination = player.transform.position;
-		if (GetComponent<NavMeshAgent>().velocity.magnitude > 1) {
-			enemyAnimator.SetBool("isRunning", true);
-		} else if () {
-			enemyAnimator.SetBool("isRunning", false);
-		}
+		zombiePathFinder.destination = player.transform.position;
+
+		zombiePathFinder.speed = zombieSpeed;
 	}
 }

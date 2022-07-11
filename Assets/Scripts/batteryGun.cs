@@ -2,10 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class gun : MonoBehaviour
+public class batteryGun : MonoBehaviour
 {
-	public float damage = 10;
-	public float range = 100;
+	public float batteryGunDamage;
+	public float batteryGunrange;
+
+	private void Start() {
+		batteryGunDamage = 10;
+		batteryGunrange = 100;
+	}
 
 	public Camera cam;
 	void Shoot() {

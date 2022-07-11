@@ -22,6 +22,7 @@ public class zombieAnimation : MonoBehaviour
 			zombieAnimator.SetBool("isAttacking", true);
 		} else {
 			zombieAnimator.SetBool("isAttacking", false);
+			zombieAnimator.SetBool("isRunning", true);
 		}
 	}
 }

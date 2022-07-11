@@ -5,17 +5,17 @@ using UnityEngine;
 public class batteryGun : MonoBehaviour
 {
 	public float batteryGunDamage;
-	public float batteryGunrange;
+	public float batteryGunRange;
 
 	private void Start() {
 		batteryGunDamage = 10;
-		batteryGunrange = 100;
+		batteryGunRange = 100;
 	}
 
 	public Camera cam;
 	void Shoot() {
 		RaycastHit hitInfo;
-		if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hitInfo, range)) {
+		if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hitInfo, batteryGunRange)) {
 			Debug.Log(hitInfo.transform.name);
 		}
 	}

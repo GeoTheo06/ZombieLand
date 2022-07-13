@@ -17,9 +17,10 @@ public class zombieSpawner : MonoBehaviour
 	int zombieCountSpawn;
 
 	private void Start() {
+		gameObject.GetComponentInChildren<MeshRenderer>().enabled = false;
 		playersPosition = GameObject.FindGameObjectsWithTag("Player");
 		playerAndZombieSpawnPositionsDistance = 100;
-		zombieCountSpawn = 500;
+		zombieCountSpawn = 100;
 		StartCoroutine(zombiesSpawn());
 	}
 
@@ -38,10 +39,17 @@ public class zombieSpawner : MonoBehaviour
 				randomZSpawnDistance = randomZSpawnDistance * -1;
 			}
 
-			Instantiate(zombieTier1, new Vector3(playersPosition[0].transform.position.x + randomXSpawnDistance, 20, playersPosition[0].transform.position.z + randomZSpawnDistance), Quaternion.identity);
-			yield return new WaitForSeconds(0.5f); //I need this because a coroutine needs a return value
-			loopCounter += 1;
+			//checking if these numbers are off-limits
+			if (playersPosition[0].transform.position.x + randomXSpawnDistance <= 410 && playersPosition[0].transform.position.x + randomXSpawnDistance >= 20 && playersPosition[0].transform.position.z + randomZSpawnDistance >= 13 && playersPosition[0].transform.position.z + randomZSpawnDistance <= 420) {
+				Instantiate(zombieTier1, new Vector3(playersPosition[0].transform.position.x + randomXSpawnDistance, 30, playersPosition[0].transform.position.z + randomZSpawnDistance), Quaternion.identity);
+				yield return new WaitForSeconds(0.1f); //I need this because a coroutine needs a return value
+				loopCounter += 1;
+			}
 		}
+	}
 
+	private void OnCollisionEnter(Collision collision) {
+		Destroy(gameObject.GetComponent<Rigidbody>());
+		gameObject.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
 	}
 }

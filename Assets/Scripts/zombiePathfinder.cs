@@ -10,21 +10,26 @@ public class zombiePathfinder : MonoBehaviour
 
 	public float zombieSpeed;
 	public float defaultZombieSpeed = 9;
+	bool startRunningToPlayer;
 
 	private void Start() {
 		player = GameObject.Find("player1");
 		gameObject.GetComponent<NavMeshAgent>().enabled = false;
 		zombieSpeed = defaultZombieSpeed;
+		startRunningToPlayer = false;
 	}
 
 	private void FixedUpdate() {
-		zombiePathFinder.destination = player.transform.position;
+		if (startRunningToPlayer) {
+			zombiePathFinder.destination = player.transform.position;
+		}
 
 		zombiePathFinder.speed = zombieSpeed;
 	}
 
 	private void OnCollisionEnter(Collision collision) {
-		Destroy(gameObject.GetComponent<Rigidbody>());
 		gameObject.GetComponent<NavMeshAgent>().enabled = true;
+		startRunningToPlayer = true;
+
 	}
 }

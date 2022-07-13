@@ -24,7 +24,6 @@ public class zombieManager : MonoBehaviour
 		player = GameObject.Find("player1");
 		playerManager = GameObject.Find("playerManager");
 
-
 		playerManagerScript = playerManager.GetComponent<playerManager>();
 		playerPosition = player.GetComponent<Transform>();
 		zombieHealth = 100;

@@ -1,33 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class zombieSpawner : MonoBehaviour
 {
 	GameObject[] playersPosition;
 	public GameObject zombieTier1;
-
 	int loopCounter = 0;
 	int makeXNegative;
 	int makeZNegative;
 
 	int randomXSpawnDistance;
 	int randomZSpawnDistance;
-	int playerAndZombieSpawnPositionsDistance;
+	int playerToZombieSpawnPositionsDistance;
 	int zombieCountSpawn;
 
+	
 	private void Start() {
-		gameObject.GetComponentInChildren<MeshRenderer>().enabled = false;
+
 		playersPosition = GameObject.FindGameObjectsWithTag("Player");
-		playerAndZombieSpawnPositionsDistance = 100;
+		playerToZombieSpawnPositionsDistance = 100;
 		zombieCountSpawn = 100;
 		StartCoroutine(zombiesSpawn());
 	}
-
+	int spawnXLocation;
+	int spawnZLocation;
 	IEnumerator zombiesSpawn() {
+		int i = 0;
 		while (loopCounter < zombieCountSpawn) {
-			randomXSpawnDistance = UnityEngine.Random.Range(1, playerAndZombieSpawnPositionsDistance);
-			randomZSpawnDistance = playerAndZombieSpawnPositionsDistance - randomXSpawnDistance;
+			randomXSpawnDistance = UnityEngine.Random.Range(1, playerToZombieSpawnPositionsDistance);
+			randomZSpawnDistance = playerToZombieSpawnPositionsDistance - randomXSpawnDistance;
 
 			makeXNegative = UnityEngine.Random.Range(0, 2);
 			makeZNegative = UnityEngine.Random.Range(0, 2);
@@ -38,18 +41,20 @@ public class zombieSpawner : MonoBehaviour
 			if (makeZNegative == 1) {
 				randomZSpawnDistance = randomZSpawnDistance * -1;
 			}
+			spawnXLocation = Mathf.RoundToInt(randomXSpawnDistance + playersPosition[0].transform.position.x);
+			spawnZLocation = Mathf.RoundToInt(playersPosition[0].transform.position.z + randomZSpawnDistance);
 
 			//checking if these numbers are off-limits
-			if (playersPosition[0].transform.position.x + randomXSpawnDistance <= 410 && playersPosition[0].transform.position.x + randomXSpawnDistance >= 20 && playersPosition[0].transform.position.z + randomZSpawnDistance >= 13 && playersPosition[0].transform.position.z + randomZSpawnDistance <= 420) {
-				Instantiate(zombieTier1, new Vector3(playersPosition[0].transform.position.x + randomXSpawnDistance, 30, playersPosition[0].transform.position.z + randomZSpawnDistance), Quaternion.identity);
-				yield return new WaitForSeconds(0.1f); //I need this because a coroutine needs a return value
+			if (spawnXLocation <= 405 && spawnXLocation >= 20 && spawnZLocation >= 13 && spawnZLocation <= 420) {
+				Instantiate(zombieTier1, new Vector3(spawnXLocation, 30, spawnZLocation), Quaternion.identity);
 				loopCounter += 1;
+				i += 1;
 			}
+			yield return new WaitForSeconds(0.1f); //I need this because a coroutine needs a return value
 		}
 	}
 
 	private void OnCollisionEnter(Collision collision) {
-		Destroy(gameObject.GetComponent<Rigidbody>());
-		gameObject.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
+			Destroy(gameObject.GetComponent<Rigidbody>());
 	}
 }

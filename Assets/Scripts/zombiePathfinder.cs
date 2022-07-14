@@ -28,8 +28,9 @@ public class zombiePathfinder : MonoBehaviour
 	}
 
 	private void OnCollisionEnter(Collision collision) {
-		gameObject.GetComponent<NavMeshAgent>().enabled = true;
-		startRunningToPlayer = true;
-
+		if (collision.gameObject.tag != "zombieTier1") {
+			gameObject.GetComponent<NavMeshAgent>().enabled = true;
+			startRunningToPlayer = true;
+		}
 	}
 }

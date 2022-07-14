@@ -7,6 +7,7 @@ public class zombieManager : MonoBehaviour
 {
 	GameObject player;
 	GameObject playerManager;
+	GameObject zombieChild;
 	public zombiePathfinder zombiePathFinderScript;
 	public zombieAnimation zombieAnimationScript;
 	playerManager playerManagerScript;
@@ -21,6 +22,10 @@ public class zombieManager : MonoBehaviour
 	int zombieHealth;
 
 	private void Start() {
+
+		zombieChild = transform.GetChild(1).gameObject;
+		hideFromCamera();
+
 		player = GameObject.Find("player1");
 		playerManager = GameObject.Find("playerManager");
 
@@ -53,5 +58,22 @@ public class zombieManager : MonoBehaviour
 			playerManagerScript.playerHealth -= zombieAttackDamage;
 			Debug.Log("you lost 100 hp");
 		}
+	}
+
+	private void OnCollisionEnter(Collision collision) {
+		if (collision.gameObject.tag != "zombieTier1") {
+			ShowOnCamera();
+		}
+	}
+
+	int hideZombieLayer;
+	public void hideFromCamera() {
+		hideZombieLayer = LayerMask.NameToLayer("hideZombieTier1");
+
+		zombieChild.layer = hideZombieLayer;
+	}
+
+	public void ShowOnCamera() {
+		zombieChild.layer = 0;
 	}
 }

@@ -62,6 +62,8 @@ public class zombieManager : MonoBehaviour
 
 	private void OnCollisionEnter(Collision collision) {
 		if (collision.gameObject.tag != "zombieTier1") {
+			gameObject.GetComponent<Rigidbody>().drag = 1000;
+			gameObject.GetComponent<Rigidbody>().angularDrag = 1000;
 			ShowOnCamera();
 		}
 	}

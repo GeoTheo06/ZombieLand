@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class batteryGun : MonoBehaviour
 {
-	public float batteryGunDamage;
-	public float batteryGunRange;
+	int batteryGunDamage;
+	float batteryGunRange;
 
 	private void Start() {
 		batteryGunDamage = 10;
@@ -16,7 +16,13 @@ public class batteryGun : MonoBehaviour
 	void Shoot() {
 		RaycastHit hitInfo;
 		if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hitInfo, batteryGunRange)) {
-			Debug.Log(hitInfo.transform.name);
+
+			if (hitInfo.transform.tag == "zombieTier1") {
+				GameObject zombieHit = hitInfo.transform.gameObject;
+				zombieHit.GetComponent<zombieManager>().zombieHealth -= batteryGunDamage;
+				Debug.Log(zombieHit.name + ": " + batteryGunDamage + "/" + zombieHit.GetComponent<zombieManager>().zombieHealth);
+			}
+
 		}
 	}
 

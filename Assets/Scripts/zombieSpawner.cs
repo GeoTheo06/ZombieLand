@@ -29,7 +29,6 @@ public class zombieSpawner : MonoBehaviour
 	int spawnXLocation;
 	int spawnZLocation;
 	IEnumerator zombiesSpawn() {
-		int i = 0;
 		while (loopCounter < zombieCountSpawn) {
 			randomXSpawnDistance = UnityEngine.Random.Range(1, playerToZombieSpawnPositionsDistance);
 			randomZSpawnDistance = playerToZombieSpawnPositionsDistance - randomXSpawnDistance;
@@ -51,7 +50,6 @@ public class zombieSpawner : MonoBehaviour
 				zombie = Instantiate(zombieTier1, new Vector3(spawnXLocation, 30, spawnZLocation), Quaternion.identity);
 				zombie.name = "1zombie" + loopCounter;
 				loopCounter += 1;
-				i += 1;
 			}
 			yield return new WaitForSeconds(0.1f); //I need this because a coroutine needs a return value
 		}

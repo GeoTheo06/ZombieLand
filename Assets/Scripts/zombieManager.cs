@@ -19,7 +19,7 @@ public class zombieManager : MonoBehaviour
 
 	public bool hasToAttack = false;
 
-	int zombieHealth;
+	public int zombieHealth;
 
 	private void Start() {
 		zombieChild = transform.GetChild(1).gameObject;
@@ -30,7 +30,7 @@ public class zombieManager : MonoBehaviour
 
 		playerManagerScript = playerManager.GetComponent<playerManager>();
 		playerPosition = player.GetComponent<Transform>();
-		zombieHealth = 100;
+		zombieHealth = 50;
 		attackDistance = 2;
 		zombieAttackDamage = 100;
 	}
@@ -50,6 +50,15 @@ public class zombieManager : MonoBehaviour
 			this.zombiePathFinderScript.zombieSpeed = this.zombiePathFinderScript.defaultZombieSpeed;
 			hasToAttack = false;
 		}
+
+		if (zombieHealth <= 0) {
+			zombieDied();
+		}
+	}
+
+	void zombieDied() {
+		Destroy(gameObject); //I will change this to an animation later
+		Debug.Log("zombie died");
 	}
 
 	public void finishedZombieAttack() { //finished attacking (the receiver is the event on the animation)

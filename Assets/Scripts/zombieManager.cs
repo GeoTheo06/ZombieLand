@@ -22,7 +22,6 @@ public class zombieManager : MonoBehaviour
 	int zombieHealth;
 
 	private void Start() {
-
 		zombieChild = transform.GetChild(1).gameObject;
 		hideFromCamera();
 
@@ -33,6 +32,7 @@ public class zombieManager : MonoBehaviour
 		playerPosition = player.GetComponent<Transform>();
 		zombieHealth = 100;
 		attackDistance = 2;
+		zombieAttackDamage = 100;
 	}
 
 	private void Update() {
@@ -56,7 +56,7 @@ public class zombieManager : MonoBehaviour
 		//if the player is still in the zombie attack range, he will lose some hp
 		if (distanceFromPlayer < attackDistance * 2) {
 			playerManagerScript.playerHealth -= zombieAttackDamage;
-			Debug.Log("you lost 100 hp");
+			Debug.Log("you lost " + zombieAttackDamage + " hp");
 		}
 	}
 

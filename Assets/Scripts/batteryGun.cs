@@ -6,13 +6,17 @@ public class batteryGun : MonoBehaviour
 {
 	int batteryGunDamage;
 	float batteryGunRange;
-
+	float shootDelay;
+	float timer;
 	private void Start() {
+		shootDelay = 0.2f;
 		batteryGunDamage = 10;
 		batteryGunRange = 100;
+		timer = 0;
 	}
 
 	public Camera cam;
+
 	void Shoot() {
 		RaycastHit hitInfo;
 		if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hitInfo, batteryGunRange)) {
@@ -26,9 +30,17 @@ public class batteryGun : MonoBehaviour
 		}
 	}
 
-	private void Update() {
+	bool stopCounting;
+	private void FixedUpdate() {
 		if (Input.GetKey(KeyCode.Mouse0)) {
-			Shoot();
+
+				timer += Time.deltaTime;
+
+			if (timer > shootDelay) {
+				Shoot();
+				timer = 0;
+			}
+
 		}
 	}
 }

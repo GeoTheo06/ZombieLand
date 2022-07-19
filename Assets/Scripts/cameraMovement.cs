@@ -12,7 +12,7 @@ public class cameraMovement : MonoBehaviour
 		mouseSensitivity = 250;
 		Cursor.lockState = CursorLockMode.Locked;
 	}
-	private void Update() {
+	private void LateUpdate() { //i need late because it has to run after the camera animation, else i cannot move the camera vertically
 		
 		float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
 		float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;

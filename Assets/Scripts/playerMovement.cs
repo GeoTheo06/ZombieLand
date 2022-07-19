@@ -19,6 +19,7 @@ public class playerMovement : MonoBehaviour
 	bool hitCeiling;
 	float z;
 	float x;
+	public bool playerDying = false;
 
 	bool speedBecameMaxSpeedAgain;
 	public Animator playerMotion;
@@ -145,6 +146,11 @@ public class playerMovement : MonoBehaviour
 			speed -= sprintSpeed;
 			maxSpeed -= sprintSpeed;
 			playerMotion.SetBool("isRunning", false);
+		}
+
+		//player Die
+		if (playerDying) {
+			playerMotion.SetBool("isDying", true);
 		}
 	}
 }

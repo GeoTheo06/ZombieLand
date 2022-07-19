@@ -5,7 +5,6 @@ using UnityEngine.AI;
 
 public class zombiePathfinder : MonoBehaviour
 {
-	public NavMeshAgent zombiePathFinder;
 	GameObject player;
 
 	public float zombieSpeed;
@@ -14,23 +13,33 @@ public class zombiePathfinder : MonoBehaviour
 
 	private void Start() {
 		player = GameObject.Find("player1");
-		gameObject.GetComponent<NavMeshAgent>().enabled = false;
+		toggleNavMeshAgent(0);
 		zombieSpeed = defaultZombieSpeed;
 		startRunningToPlayer = false;
 	}
 
 	private void FixedUpdate() {
 		if (startRunningToPlayer) {
-			zombiePathFinder.destination = player.transform.position;
+			if (gameObject.GetComponent<NavMeshAgent>().isActiveAndEnabled) {
+				gameObject.GetComponent<NavMeshAgent>().destination = player.transform.position;
+			}
 		}
 
-		zombiePathFinder.speed = zombieSpeed;
+		gameObject.GetComponent<NavMeshAgent>().speed = zombieSpeed;
 	}
 
 	private void OnCollisionEnter(Collision collision) {
 		if (collision.gameObject.tag != "zombieTier1") {
-			gameObject.GetComponent<NavMeshAgent>().enabled = true;
+			toggleNavMeshAgent(1);
 			startRunningToPlayer = true;
 		}
 	}
-}
+
+	public void toggleNavMeshAgent(int enableOrDisable) {
+		if (enableOrDisable == 1) {
+			gameObject.GetComponent<NavMeshAgent>().enabled = true;
+		} else if (enableOrDisable == 0) {
+		gameObject.GetComponent<NavMeshAgent>().enabled = false;
+		}
+	}
+} 

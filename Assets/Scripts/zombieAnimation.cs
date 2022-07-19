@@ -24,5 +24,9 @@ public class zombieAnimation : MonoBehaviour
 			zombieAnimator.SetBool("isAttacking", false);
 			zombieAnimator.SetBool("isRunning", true);
 		}
+
+		if (zombieManagerScript.isDying) {
+			zombieAnimator.SetBool("isDying", true);
+		}
 	}
 }

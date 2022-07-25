@@ -10,7 +10,7 @@ public class batteryGun : MonoBehaviour
 	float timer;
 	private void Start() {
 		shootDelay = 0.2f;
-		batteryGunDamage = 10;
+		batteryGunDamage = 25;
 		batteryGunRange = 100;
 		timer = 0;
 	}

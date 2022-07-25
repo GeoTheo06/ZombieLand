@@ -23,7 +23,7 @@ public class zombieSpawner : MonoBehaviour
 
 		playersPosition = GameObject.FindGameObjectsWithTag("Player");
 		playerToZombieSpawnPositionsDistance = 100;
-		zombieCountSpawn = 100;
+		zombieCountSpawn = 500;
 		StartCoroutine(zombiesSpawn());
 	}
 	int spawnXLocation;
@@ -46,7 +46,7 @@ public class zombieSpawner : MonoBehaviour
 			spawnZLocation = Mathf.RoundToInt(playersPosition[0].transform.position.z + randomZSpawnDistance);
 
 			//checking if these numbers are off-limits
-			if (spawnXLocation <= 405 && spawnXLocation >= 20 && spawnZLocation >= 13 && spawnZLocation <= 420) {
+			if (spawnXLocation <= 405 && spawnXLocation >= 25 && spawnZLocation >= 13 && spawnZLocation <= 420) {
 				zombie = Instantiate(zombieTier1, new Vector3(spawnXLocation, 30, spawnZLocation), Quaternion.identity);
 				zombie.name = "1zombie" + loopCounter;
 				loopCounter += 1;

@@ -10,7 +10,7 @@ public class zombiePathfinder : MonoBehaviour
 	playerManager playerManagerScript;
 
 	public float zombieSpeed;
-	public float defaultZombieSpeed = 9;
+	public float defaultZombieSpeed;
 	bool startRunningToPlayer;
 
 	private void Start() {
@@ -20,6 +20,7 @@ public class zombiePathfinder : MonoBehaviour
 		zombieSpeed = defaultZombieSpeed;
 		startRunningToPlayer = false;
 		playerManagerScript = playerManager.GetComponent<playerManager>();
+		defaultZombieSpeed = 10;
 	}
 
 	private void FixedUpdate() {

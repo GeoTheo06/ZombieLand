@@ -9,7 +9,7 @@ public class zombiePathfinder : MonoBehaviour
 	GameObject player;
 
 	public float zombieSpeed;
-	public float defaultZombieSpeed = 9;
+	public float defaultZombieSpeed;
 	bool startRunningToPlayer;
 
 	private void Start() {
@@ -17,6 +17,11 @@ public class zombiePathfinder : MonoBehaviour
 		gameObject.GetComponent<NavMeshAgent>().enabled = false;
 		zombieSpeed = defaultZombieSpeed;
 		startRunningToPlayer = false;
+<<<<<<< HEAD
+=======
+		playerManagerScript = playerManager.GetComponent<playerManager>();
+		defaultZombieSpeed = 10;
+>>>>>>> parent of 24573ee (Revert "changed some values for better gameplay")
 	}
 
 	private void FixedUpdate() {

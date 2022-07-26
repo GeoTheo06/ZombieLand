@@ -6,8 +6,6 @@ using UnityEngine.AI;
 public class zombiePathfinder : MonoBehaviour
 {
 	GameObject player;
-	GameObject playerManager;
-	playerManager playerManagerScript;
 
 	public float zombieSpeed;
 	public float defaultZombieSpeed = 9;
@@ -15,19 +13,15 @@ public class zombiePathfinder : MonoBehaviour
 
 	private void Start() {
 		player = GameObject.Find("player1");
-		playerManager = GameObject.Find("playerManager");
 		toggleNavMeshAgent(0);
 		zombieSpeed = defaultZombieSpeed;
 		startRunningToPlayer = false;
-		playerManagerScript = playerManager.GetComponent<playerManager>();
 	}
 
 	private void FixedUpdate() {
 		if (startRunningToPlayer) {
-			if (gameObject.GetComponent<NavMeshAgent>().isActiveAndEnabled && !playerManagerScript.playerDead) {
+			if (gameObject.GetComponent<NavMeshAgent>().isActiveAndEnabled) {
 				gameObject.GetComponent<NavMeshAgent>().destination = player.transform.position;
-			} else {
-				gameObject.GetComponent<NavMeshAgent>().enabled = false;
 			}
 		}
 

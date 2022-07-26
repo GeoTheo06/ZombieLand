@@ -6,17 +6,9 @@ public class zombieAnimation : MonoBehaviour
 {
 
 	public Animator zombieAnimator;
-	GameObject gameManager;
-	gameManager1 gameManagerScript;
-
 
 	public zombiePathfinder zombiePathFinderScript;
 	public zombieManager zombieManagerScript;
-
-	private void Start() {
-		gameManager = GameObject.Find("gameManager");
-		gameManagerScript = gameManager.GetComponent<gameManager1>();
-	}
 	private void Update() {
 
 		if (zombiePathFinderScript.zombieSpeed > 1) {
@@ -36,13 +28,5 @@ public class zombieAnimation : MonoBehaviour
 		if (zombieManagerScript.isDying) {
 			zombieAnimator.SetBool("isDying", true);
 		}
-
-		if (gameManagerScript.gameOver) {
-			zombieAnimator.SetBool("isRunning", false);
-			zombieAnimator.SetBool("isAttacking", false);
-			zombieAnimator.SetBool("isBiting", false);
-			zombieAnimator.SetBool("isScreaming", false);
-		}
-
 	}
 }

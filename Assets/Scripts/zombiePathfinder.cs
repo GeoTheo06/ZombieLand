@@ -5,37 +5,47 @@ using UnityEngine.AI;
 
 public class zombiePathfinder : MonoBehaviour
 {
-	public NavMeshAgent zombiePathFinder;
 	GameObject player;
+	GameObject playerManager;
+	playerManager playerManagerScript;
 
 	public float zombieSpeed;
-	public float defaultZombieSpeed;
+	public float defaultZombieSpeed = 9;
 	bool startRunningToPlayer;
 
 	private void Start() {
 		player = GameObject.Find("player1");
-		gameObject.GetComponent<NavMeshAgent>().enabled = false;
+		playerManager = GameObject.Find("playerManager");
+		toggleNavMeshAgent(0);
 		zombieSpeed = defaultZombieSpeed;
 		startRunningToPlayer = false;
-<<<<<<< HEAD
-=======
 		playerManagerScript = playerManager.GetComponent<playerManager>();
-		defaultZombieSpeed = 10;
->>>>>>> parent of 24573ee (Revert "changed some values for better gameplay")
 	}
 
 	private void FixedUpdate() {
 		if (startRunningToPlayer) {
-			zombiePathFinder.destination = player.transform.position;
+			if (gameObject.GetComponent<NavMeshAgent>().isActiveAndEnabled && !playerManagerScript.playerDead) {
+				gameObject.GetComponent<NavMeshAgent>().destination = player.transform.position;
+			} else {
+				gameObject.GetComponent<NavMeshAgent>().enabled = false;
+			}
 		}
 
-		zombiePathFinder.speed = zombieSpeed;
+		gameObject.GetComponent<NavMeshAgent>().speed = zombieSpeed;
 	}
 
 	private void OnCollisionEnter(Collision collision) {
 		if (collision.gameObject.tag != "zombieTier1") {
-			gameObject.GetComponent<NavMeshAgent>().enabled = true;
+			toggleNavMeshAgent(1);
 			startRunningToPlayer = true;
 		}
 	}
-}
+
+	public void toggleNavMeshAgent(int enableOrDisable) {
+		if (enableOrDisable == 1) {
+			gameObject.GetComponent<NavMeshAgent>().enabled = true;
+		} else if (enableOrDisable == 0) {
+		gameObject.GetComponent<NavMeshAgent>().enabled = false;
+		}
+	}
+} 

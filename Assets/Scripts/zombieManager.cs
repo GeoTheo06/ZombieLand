@@ -18,6 +18,7 @@ public class zombieManager : MonoBehaviour
 	int zombieAttackDamage;
 
 	public bool hasToAttack = false;
+	public bool isDying = false;
 
 	public int zombieHealth;
 
@@ -38,7 +39,7 @@ public class zombieManager : MonoBehaviour
 	private void Update() {
 		distanceFromPlayer = Vector3.Distance(playerPosition.transform.position, transform.position);
 
-		//setting the hasToAttack and changing speed to 0 when attacking
+		//setting the hasToAttack and changing speed to 0 when attacking for the animations
 		if (distanceFromPlayer < attackDistance) {
 			hasToAttack = true;
 			this.zombiePathFinderScript.zombieSpeed = 0;
@@ -52,13 +53,11 @@ public class zombieManager : MonoBehaviour
 		}
 
 		if (zombieHealth <= 0) {
-			zombieDied();
+			isDying = true;
+			Destroy(gameObject.GetComponent<Rigidbody>());
+			Destroy(gameObject.GetComponent<CapsuleCollider>());
+			zombiePathFinderScript.toggleNavMeshAgent(0);
 		}
-	}
-
-	void zombieDied() {
-		Destroy(gameObject); //I will change this to an animation later
-		Debug.Log("zombie died");
 	}
 
 	public void finishedZombieAttack() { //finished attacking (the receiver is the event on the animation)

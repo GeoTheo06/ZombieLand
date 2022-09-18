@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class zombieManager : MonoBehaviour
-{
+public class zombieManager : MonoBehaviour {
 	GameObject player;
 	GameObject playerManager;
 	GameObject zombieChild;
+	GameObject bloodPS;
+	GameObject bloodChild1;
+	GameObject bloodChild2;
+
 	public zombiePathfinder zombiePathFinderScript;
 	public zombieAnimation zombieAnimationScript;
 	playerManager playerManagerScript;
@@ -17,24 +20,35 @@ public class zombieManager : MonoBehaviour
 	float attackDistance;
 	int zombieAttackDamage;
 
-	public bool hasToAttack = false;
-	public bool isDying = false;
+	public bool hasToAttack;
+	public bool isDying;
+	public bool isZombieHit;
 
 	public int zombieHealth;
 
 	private void Start() {
-		zombieChild = transform.GetChild(1).gameObject;
+		zombieChild = transform.GetChild(1).gameObject; //zombie body
 		hideFromCamera();
 
 		player = GameObject.Find("player1");
 		playerManager = GameObject.Find("playerManager");
+
+		bloodPS = transform.GetChild(2).gameObject;
+		bloodChild1 = bloodPS.transform.GetChild(0).gameObject;
+		bloodChild2 = bloodPS.transform.GetChild(1).gameObject;
+		getBloodFX(0); //hide
 
 		playerManagerScript = playerManager.GetComponent<playerManager>();
 		playerPosition = player.GetComponent<Transform>();
 		zombieHealth = 50;
 		attackDistance = 2;
 		zombieAttackDamage = 100;
+		isZombieHit = false;
+		isDying = false;
+		hasToAttack = false;
 	}
+	bool stopCounting = true;
+	float timer = 0;
 
 	private void Update() {
 		distanceFromPlayer = Vector3.Distance(playerPosition.transform.position, transform.position);
@@ -52,6 +66,27 @@ public class zombieManager : MonoBehaviour
 			hasToAttack = false;
 		}
 
+		if (isZombieHit) {
+			getBloodFX(1); //show
+			Debug.Log("blood is active");
+
+			timer = 0;
+			stopCounting = false;
+			isZombieHit = false;
+		}
+
+			if (!stopCounting) {
+				timer += Time.deltaTime;
+			}
+
+			if (timer > 0.4f) {
+			getBloodFX(0); //hide
+			Debug.Log("blood is inactive");
+				stopCounting = true;
+				isZombieHit = false;
+			timer = 0;
+			}
+
 		if (zombieHealth <= 0) {
 			isDying = true;
 			Destroy(gameObject.GetComponent<Rigidbody>());
@@ -60,7 +95,9 @@ public class zombieManager : MonoBehaviour
 		}
 	}
 
-	public void finishedZombieAttack() { //finished attacking (the receiver is the event on the animation)
+
+
+		public void finishedZombieAttack() { //finished attacking (the receiver is the event on the animation)
 		//if the player is still in the zombie attack range, he will lose some hp
 		if (distanceFromPlayer < attackDistance * 2) {
 			playerManagerScript.playerHealth -= zombieAttackDamage;
@@ -71,7 +108,7 @@ public class zombieManager : MonoBehaviour
 	private void OnCollisionEnter(Collision collision) {
 		if (collision.gameObject.tag != "zombieTier1") {
 			gameObject.GetComponent<Rigidbody>().isKinematic = true;
-			ShowOnCamera();
+			ShowZombieChildOnCamera();
 		}
 	}
 
@@ -82,7 +119,20 @@ public class zombieManager : MonoBehaviour
 		zombieChild.layer = hideZombieLayer;
 	}
 
-	public void ShowOnCamera() {
+	public void getBloodFX(int hide_show) {
+		if (hide_show == 0) {
+			int bloodFXArray = LayerMask.NameToLayer("blood");
+			bloodPS.layer = bloodFXArray;
+			bloodChild1.layer = bloodFXArray;
+			bloodChild2.layer = bloodFXArray;
+		} else if (hide_show == 1) {
+			bloodPS.layer = 0; //default layer
+			bloodChild1.layer = 0;
+			bloodChild2.layer = 0;
+		}
+	}
+
+	public void ShowZombieChildOnCamera() {
 		zombieChild.layer = 0;
 	}
 }

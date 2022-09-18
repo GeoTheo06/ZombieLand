@@ -8,9 +8,10 @@ public class batteryGun : MonoBehaviour
 	float batteryGunRange;
 	float shootDelay;
 	float timer;
+
 	private void Start() {
 		shootDelay = 0.2f;
-		batteryGunDamage = 10;
+		batteryGunDamage = 20;
 		batteryGunRange = 100;
 		timer = 0;
 	}
@@ -23,7 +24,8 @@ public class batteryGun : MonoBehaviour
 
 			if (hitInfo.transform.tag == "zombieTier1") {
 				GameObject zombieHit = hitInfo.transform.gameObject;
-				zombieHit.GetComponent<zombieManager>().zombieHealth -= batteryGunDamage;
+				zombieHit.GetComponent<zombieManager>().zombieHealth -= batteryGunDamage; //i do this because there are many zombieTier1s but i want to change only the value of the zombie that i hit
+				zombieHit.GetComponent<zombieManager>().isZombieHit = true;
 				Debug.Log(zombieHit.name + ": " + batteryGunDamage + "/" + zombieHit.GetComponent<zombieManager>().zombieHealth);
 			}
 

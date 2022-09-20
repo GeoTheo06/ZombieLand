@@ -23,7 +23,7 @@ public class zombieSpawner : MonoBehaviour
 
 		playersPosition = GameObject.FindGameObjectsWithTag("Player");
 		playerToZombieSpawnPositionsDistance = 100;
-		zombieCountSpawn = 5;
+		zombieCountSpawn = 100;
 		StartCoroutine(zombiesSpawn());
 	}
 	int spawnXLocation;

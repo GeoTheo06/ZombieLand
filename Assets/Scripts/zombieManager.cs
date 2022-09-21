@@ -68,7 +68,6 @@ public class zombieManager : MonoBehaviour {
 
 		if (isZombieHit) {
 			getBloodFX(1); //show
-			Debug.Log("blood is active");
 
 			timer = 0;
 			stopCounting = false;
@@ -81,7 +80,6 @@ public class zombieManager : MonoBehaviour {
 
 			if (timer > 0.4f) {
 			getBloodFX(0); //hide
-			Debug.Log("blood is inactive");
 				stopCounting = true;
 				isZombieHit = false;
 			timer = 0;

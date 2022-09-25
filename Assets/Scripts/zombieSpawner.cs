@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class zombieSpawner : MonoBehaviour
-{
+public class zombieSpawner : MonoBehaviour {
 	GameObject[] playersPosition;
 	public GameObject zombieTier1;
 	int loopCounter = 0;
@@ -18,12 +17,12 @@ public class zombieSpawner : MonoBehaviour
 
 
 	GameObject zombie;
-	
+
 	private void Start() {
 
 		playersPosition = GameObject.FindGameObjectsWithTag("Player");
 		playerToZombieSpawnPositionsDistance = 100;
-		zombieCountSpawn = 100;
+		zombieCountSpawn = 0;
 		StartCoroutine(zombiesSpawn());
 	}
 	int spawnXLocation;
@@ -56,6 +55,6 @@ public class zombieSpawner : MonoBehaviour
 	}
 
 	private void OnCollisionEnter(Collision collision) {
-			Destroy(gameObject.GetComponent<Rigidbody>());
+		Destroy(gameObject.GetComponent<Rigidbody>());
 	}
 }

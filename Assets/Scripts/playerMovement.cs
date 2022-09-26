@@ -2,13 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class playerMovement : MonoBehaviour
-{
+public class playerMovement : MonoBehaviour {
 	public CharacterController characterController;
 	float speed = 5;
 	float maxSpeed;
 	float playerGravity = -40;
-	float jumpHeight = 3;
+	float jumpHeight = 1.5f;
 
 	public Transform groundCheck;
 	public Transform ceilingCheck;
@@ -47,7 +46,7 @@ public class playerMovement : MonoBehaviour
 
 		//player starts pressing buttons to move
 		if (Input.GetKey(KeyCode.A)) {
-				x = -1;
+			x = -1;
 			if (isGrounded) {
 				playerMotion.SetBool("strafeWalking", true);
 			} else {
@@ -55,7 +54,7 @@ public class playerMovement : MonoBehaviour
 			}
 		}
 		if (Input.GetKey(KeyCode.D)) {
-				x = 1;
+			x = 1;
 			if (isGrounded) {
 				playerMotion.SetBool("strafeWalking", true);
 			} else {
@@ -68,7 +67,7 @@ public class playerMovement : MonoBehaviour
 		}
 
 		if (Input.GetKey(KeyCode.W)) {
-				z = 1;
+			z = 1;
 			if (isGrounded) {
 				playerMotion.SetBool("walkingStraight", true);
 			} else {
@@ -76,7 +75,7 @@ public class playerMovement : MonoBehaviour
 			}
 		}
 		if (Input.GetKey(KeyCode.S)) {
-				z = -1;
+			z = -1;
 			if (isGrounded) {
 				playerMotion.SetBool("walkingStraight", true);
 			} else {
@@ -88,7 +87,7 @@ public class playerMovement : MonoBehaviour
 			playerMotion.SetBool("walkingStraight", false);
 		}
 
-			//if player stops moving
+		//if player stops moving
 		if (Input.GetKeyUp(KeyCode.A)) {
 			x = 0;
 			playerMotion.SetBool("strafeWalking", false);
@@ -106,12 +105,12 @@ public class playerMovement : MonoBehaviour
 			z = 0;
 			playerMotion.SetBool("walkingStraight", false);
 		}
-		
+
 		playerMotion.SetFloat("animationSpeed", z);
 		playerMotion.SetFloat("strafeWalkingSpeed", x);
 
 		//if player presses forward and sideways button at the same time, he will gain speed because move will be equal to 2 (x + z = 1 + 1 = 2) so here: characterController.Move(move * speed * Time.deltaTime); the speed of the character will be 2 times greater than the maximum allowed speed and we don't want that so we abstract 1 in total from the speed.
-		Vector3 move = transform.right * x + transform.forward* z;
+		Vector3 move = transform.right * x + transform.forward * z;
 		if (move.x > 1) {
 			move.x -= 0.5f;
 		} else if (move.x < -1) {

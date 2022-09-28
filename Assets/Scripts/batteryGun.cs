@@ -136,40 +136,42 @@ public class batteryGun : MonoBehaviour {
 			laserEndPoint.transform.position = laserHitInfo.point;
 
 			//keep laserEndPoint in a realistic size range regarding distance
-			float laserEndPointCameraDistance = Vector3.Distance(cam.transform.position, laserEndPoint.transform.position);
-			Vector3 Distance_ScaleRatio = laserEndPoint.transform.localScale / laserEndPointCameraDistance;
 
-			Vector3 minimumIdealDistance_ScaleRatio = new Vector3(0.01f, 0.01f, 0.01f);
-			Vector3 maximumIdealDistance_ScaleRatio = new Vector3(0.02f, 0.02f, 0.02f);
+			float laser_CameraDistance = Vector3.Distance(cam.transform.position, laserHitInfo.point);
+			Vector3 Distance_ScaleRatio = new Vector3(laser_CameraDistance / laserEndPoint.transform.localScale.x, laser_CameraDistance / laserEndPoint.transform.localScale.y, laser_CameraDistance / laserEndPoint.transform.localScale.z);
+			//Debug.Log("Distance_ScaleRatio: " + Distance_ScaleRatio);
+
+			Vector3 minimumIdealDistance_ScaleRatio = new Vector3(30, 30, 30);
+			Vector3 maximumIdealDistance_ScaleRatio = new Vector3(70, 70, 70);
 
 			if (Distance_ScaleRatio.x < minimumIdealDistance_ScaleRatio.x && Distance_ScaleRatio.y < minimumIdealDistance_ScaleRatio.y && Distance_ScaleRatio.z < minimumIdealDistance_ScaleRatio.z) {
-				laserEndPoint.transform.localScale = minimumIdealDistance_ScaleRatio * laserEndPointCameraDistance;
+				//so Distance_ScaleRatio can be 20 again
+				laserEndPoint.transform.localScale = new Vector3(laser_CameraDistance / minimumIdealDistance_ScaleRatio.x, laser_CameraDistance / minimumIdealDistance_ScaleRatio.y, laser_CameraDistance / minimumIdealDistance_ScaleRatio.z);
 			}
 			if (Distance_ScaleRatio.x > maximumIdealDistance_ScaleRatio.x && Distance_ScaleRatio.y > maximumIdealDistance_ScaleRatio.y && Distance_ScaleRatio.z > maximumIdealDistance_ScaleRatio.z) {
-				laserEndPoint.transform.localScale = maximumIdealDistance_ScaleRatio * laserEndPointCameraDistance;
+				laserEndPoint.transform.localScale = new Vector3(laser_CameraDistance / maximumIdealDistance_ScaleRatio.x, laser_CameraDistance / maximumIdealDistance_ScaleRatio.y, laser_CameraDistance / maximumIdealDistance_ScaleRatio.z);
 			}
 
 			//keep laserSight in a realistic size range regarding distance
-			//0.03 - 0.08
-			float laserWidth = laserSight.startWidth;
-			float laser_CameraDistance = Vector3.Distance(cam.transform.position, laserHitInfo.point);
-			float Distance_ScaleLaserRatio = laserWidth / laser_CameraDistance;
-			float idealLaserWidth = 0.004f;
+			float Distance_ScaleLaserRatio = laser_CameraDistance / laserSight.endWidth;
 
-			laserSight.startWidth = laser_CameraDistance * idealLaserWidth;
-			float minimumLaserWidth = 0.04f;
-			float maximumLaserWidth = 0.08f;
-			if (laserSight.startWidth > maximumLaserWidth) {
-				laserSight.startWidth = maximumLaserWidth;
-			} else if (laserSight.startWidth < minimumLaserWidth) {
-				laserSight.startWidth = minimumLaserWidth;
+			int minimumIdealLaserWidthRatio = 125;
+			int maximumIdealLaserWidthRatio = 350;
+
+			if (Distance_ScaleLaserRatio < minimumIdealLaserWidthRatio) {
+				laserSight.endWidth = laser_CameraDistance / minimumIdealLaserWidthRatio;
 			}
+			if (Distance_ScaleLaserRatio > maximumIdealLaserWidthRatio) {
+				laserSight.endWidth = laser_CameraDistance / maximumIdealLaserWidthRatio;
+			}
+			//Debug.Log("Distance_ScaleLaserRatio: " + Distance_ScaleLaserRatio);
 
 			//if player goes too close to the wall I have unexpected behaviour, so i disable the laser
 			if (laser_CameraDistance < 2) {
-				laserSight.startWidth = 0;
+				laserSight.enabled = false;
 				laserEndPoint.SetActive(false);
 			} else {
+				laserSight.enabled = true;
 				laserEndPoint.SetActive(true);
 			}
 

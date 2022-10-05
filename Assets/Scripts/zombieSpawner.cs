@@ -18,11 +18,19 @@ public class zombieSpawner : MonoBehaviour {
 
 	GameObject zombie;
 
-	private void Start() {
+	GameObject mapBound1;
+	GameObject mapBound2;
+	GameObject mapBound3;
+	GameObject mapBound4;
 
+	private void Start() {
+		mapBound1 = GameObject.Find("mapBound1");
+		mapBound2 = GameObject.Find("mapBound2");
+		mapBound3 = GameObject.Find("mapBound3");
+		mapBound4 = GameObject.Find("mapBound4");
 		playersPosition = GameObject.FindGameObjectsWithTag("Player");
 		playerToZombieSpawnPositionsDistance = 100;
-		zombieCountSpawn = 0;
+		zombieCountSpawn = 3;
 		StartCoroutine(zombiesSpawn());
 	}
 	int spawnXLocation;
@@ -41,15 +49,18 @@ public class zombieSpawner : MonoBehaviour {
 			if (makeZNegative == 1) {
 				randomZSpawnDistance = randomZSpawnDistance * -1;
 			}
+
 			spawnXLocation = Mathf.RoundToInt(randomXSpawnDistance + playersPosition[0].transform.position.x);
 			spawnZLocation = Mathf.RoundToInt(playersPosition[0].transform.position.z + randomZSpawnDistance);
 
 			//checking if these numbers are off-limits
-			if (spawnXLocation <= 405 && spawnXLocation >= 20 && spawnZLocation >= 13 && spawnZLocation <= 420) {
+			//if (spawnXLocation <= 405 && spawnXLocation >= 20 && spawnZLocation >= 13 && spawnZLocation <= 420) {
+			if (spawnXLocation <= mapBound2.transform.position.x && spawnXLocation >= mapBound1.transform.position.x && spawnZLocation >= mapBound3.transform.position.z && spawnZLocation <= mapBound4.transform.position.z) {
 				zombie = Instantiate(zombieTier1, new Vector3(spawnXLocation, 30, spawnZLocation), Quaternion.identity);
 				zombie.name = "1zombie" + loopCounter;
 				loopCounter += 1;
 			}
+
 			yield return new WaitForSeconds(0.1f); //I need this because a coroutine needs a return value
 		}
 	}

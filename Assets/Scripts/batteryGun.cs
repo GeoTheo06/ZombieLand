@@ -12,7 +12,6 @@ public class batteryGun : MonoBehaviour {
 
 	GameObject laserEndPoint;
 
-
 	bool playerHasShot;
 	bool playerCanShoot;
 	bool playerPendingToShoot;
@@ -20,7 +19,6 @@ public class batteryGun : MonoBehaviour {
 	ParticleSystem[] searchGunshot;
 	ParticleSystem gunshot;
 
-	Collider RaycastCollider;
 
 	private void Start() {
 		shootDelay = 0.4f;
@@ -29,7 +27,6 @@ public class batteryGun : MonoBehaviour {
 		batteryGunRange = 50;
 		timer = 0;
 		timer1 = 0;
-		RaycastCollider = GetComponent<Collider>();
 		playerHasShot = false;
 		playerCanShoot = true;
 		playerPendingToShoot = false;
@@ -122,6 +119,10 @@ public class batteryGun : MonoBehaviour {
 		}
 	}
 
+	int minimumIdealLaserWidthRatio = 200;
+	int maximumIdealLaserWidthRatio = 350;
+	Vector3 minimumIdealDistance_ScaleRatio = new Vector3(50, 50, 50);
+	Vector3 maximumIdealDistance_ScaleRatio = new Vector3(70, 70, 70);
 	private void LateUpdate() {
 		//laser sight
 
@@ -131,8 +132,6 @@ public class batteryGun : MonoBehaviour {
 			laserSight.SetPosition(0, gunAim.transform.position);
 			laserSight.SetPosition(1, laserHitInfo.point);
 
-
-
 			laserEndPoint.transform.position = laserHitInfo.point;
 
 			//keep laserEndPoint in a realistic size range regarding distance
@@ -140,9 +139,6 @@ public class batteryGun : MonoBehaviour {
 			float laser_CameraDistance = Vector3.Distance(cam.transform.position, laserHitInfo.point);
 			Vector3 Distance_ScaleRatio = new Vector3(laser_CameraDistance / laserEndPoint.transform.localScale.x, laser_CameraDistance / laserEndPoint.transform.localScale.y, laser_CameraDistance / laserEndPoint.transform.localScale.z);
 			//Debug.Log("Distance_ScaleRatio: " + Distance_ScaleRatio);
-
-			Vector3 minimumIdealDistance_ScaleRatio = new Vector3(50, 50, 50);
-			Vector3 maximumIdealDistance_ScaleRatio = new Vector3(70, 70, 70);
 
 			if (Distance_ScaleRatio.x < minimumIdealDistance_ScaleRatio.x && Distance_ScaleRatio.y < minimumIdealDistance_ScaleRatio.y && Distance_ScaleRatio.z < minimumIdealDistance_ScaleRatio.z) {
 				//so Distance_ScaleRatio can be 20 again
@@ -154,9 +150,6 @@ public class batteryGun : MonoBehaviour {
 
 			//keep laserSight in a realistic size range regarding distance
 			float Distance_ScaleLaserRatio = laser_CameraDistance / laserSight.endWidth;
-
-			int minimumIdealLaserWidthRatio = 200;
-			int maximumIdealLaserWidthRatio = 350;
 
 			if (Distance_ScaleLaserRatio < minimumIdealLaserWidthRatio) {
 				laserSight.endWidth = laser_CameraDistance / minimumIdealLaserWidthRatio;

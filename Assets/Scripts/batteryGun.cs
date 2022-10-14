@@ -11,7 +11,8 @@ public class batteryGun : MonoBehaviour {
 	float timer1;
 
 	GameObject laserEndPoint;
-
+	Light[] allLights;
+	Light flashlight;
 	bool playerHasShot;
 	bool playerCanShoot;
 	bool playerPendingToShoot;
@@ -31,6 +32,13 @@ public class batteryGun : MonoBehaviour {
 		playerCanShoot = true;
 		playerPendingToShoot = false;
 		laserEndPoint = GameObject.Find("laserEndPoint");
+
+		allLights = FindObjectsOfType<Light>();
+		for (int i = 0; i < allLights.Length; i++) {
+			if (allLights[i].name == "flashlight") {
+				flashlight = allLights[i];
+			}
+		}
 
 		//searching "gunshot" particle system by name
 		searchGunshot = FindObjectsOfType<ParticleSystem>();
@@ -160,9 +168,24 @@ public class batteryGun : MonoBehaviour {
 			//Debug.Log("Distance_ScaleLaserRatio: " + Distance_ScaleLaserRatio);
 
 			//if player goes too close to the wall I have unexpected behaviour, so i disable the laser
+			Debug.Log(laser_CameraDistance);
+			if (laser_CameraDistance > 4) {
+				flashlight.intensity = 100;
+			}
+			if (laser_CameraDistance > 3 && laser_CameraDistance < 4) {
+				flashlight.intensity = 50;
+			}
+			if (laser_CameraDistance > 2 && laser_CameraDistance < 3) {
+				flashlight.intensity = 25;
+			}
+			if (laser_CameraDistance < 2) {
+				flashlight.intensity = 7;
+			}
+
 			if (laser_CameraDistance < 2) {
 				laserSight.enabled = false;
 				laserEndPoint.SetActive(false);
+
 			} else {
 				laserSight.enabled = true;
 				laserEndPoint.SetActive(true);

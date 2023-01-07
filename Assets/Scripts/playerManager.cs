@@ -15,7 +15,8 @@ public class playerManager : MonoBehaviour
 
 	public Animator cameraDie;
 
-	private void Start() {
+	private void Start()
+	{
 		player = GameObject.Find("player1");
 		gameManager = GameObject.Find("gameManager");
 		camera1 = GameObject.Find("camera1");
@@ -25,8 +26,10 @@ public class playerManager : MonoBehaviour
 		cameraMovementScript = camera1.GetComponent<cameraMovement>();
 	}
 
-	private void Update() {
-		if (playerHealth <= 0) {
+	private void Update()
+	{
+		if (playerHealth <= 0)
+		{
 			playerMovementScript.playerDying = true; // starting animation for dying
 			cameraMovementScript.enabled = false; //disabling camera control
 			gameManagerScript.gameOver = true; //telling the game manager that the game has finished

@@ -13,31 +13,39 @@ public class zombieAnimation : MonoBehaviour
 	public zombiePathfinder zombiePathFinderScript;
 	public zombieManager zombieManagerScript;
 
-	private void Start() {
+	private void Start()
+	{
 		gameManager = GameObject.Find("gameManager");
 		gameManagerScript = gameManager.GetComponent<gameManager1>();
 	}
-	private void Update() {
+	private void Update()
+	{
 
-		if (zombiePathFinderScript.zombieSpeed > 1) {
+		if (zombiePathFinderScript.zombieSpeed > 1)
+		{
 			zombieAnimator.SetBool("isRunning", true);
 			zombieAnimator.SetBool("isAttacking", false);
 			zombieAnimator.SetBool("isBiting", false);
 		}
 
-		if (zombieManagerScript.hasToAttack) {
+		if (zombieManagerScript.hasToAttack)
+		{
 			zombieAnimator.SetBool("isRunning", false);
 			zombieAnimator.SetBool("isAttacking", true);
-		} else {
+		}
+		else
+		{
 			zombieAnimator.SetBool("isAttacking", false);
 			zombieAnimator.SetBool("isRunning", true);
 		}
 
-		if (zombieManagerScript.isDying) {
+		if (zombieManagerScript.isDying)
+		{
 			zombieAnimator.SetBool("isDying", true);
 		}
 
-		if (gameManagerScript.gameOver) {
+		if (gameManagerScript.gameOver)
+		{
 			zombieAnimator.SetBool("isRunning", false);
 			zombieAnimator.SetBool("isAttacking", false);
 			zombieAnimator.SetBool("isBiting", false);

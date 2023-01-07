@@ -167,7 +167,7 @@ public class batteryGun : MonoBehaviour {
 			}
 			//Debug.Log("Distance_ScaleLaserRatio: " + Distance_ScaleLaserRatio);
 
-			//if player goes too close to the wall I have unexpected behaviour, so i disable the laser
+			//if player goes too close to the wall I have unexpected behaviour, so i disable the laser and lower the intensity of the flashlight
 			Debug.Log(laser_CameraDistance);
 			if (laser_CameraDistance > 4) {
 				flashlight.intensity = 100;

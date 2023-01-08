@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class playerMovement : MonoBehaviour
-{
+public class playerMovement : MonoBehaviour {
 	public CharacterController characterController;
 	float speed = 5;
 	float maxSpeed;
@@ -27,20 +26,17 @@ public class playerMovement : MonoBehaviour
 	public GameObject character;
 	Vector3 velocity;
 
-	private void Start()
-	{
+	private void Start() {
 		maxSpeed = speed;
 	}
 
-	private void Update()
-	{
+	private void Update() {
 		isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 		hitCeiling = Physics.CheckSphere(ceilingCheck.position, groundDistance, groundMask);
 		playerMotion.SetBool("isGrounded", isGrounded);
 
 		//falling
-		if (isGrounded && velocity.y < 0)
-		{
+		if (isGrounded && velocity.y < 0) {
 			velocity.y = -2;
 		}
 
@@ -49,85 +45,63 @@ public class playerMovement : MonoBehaviour
 		float z = Input.GetAxis("Vertical");*/
 
 		//player starts pressing buttons to move
-		if (Input.GetKey(KeyCode.A))
-		{
+		if (Input.GetKey(KeyCode.A)) {
 			x = -1;
-			if (isGrounded)
-			{
+			if (isGrounded) {
 				playerMotion.SetBool("strafeWalking", true);
-			}
-			else
-			{
+			} else {
 				playerMotion.SetBool("strafeWalking", false);
 			}
 		}
-		if (Input.GetKey(KeyCode.D))
-		{
+		if (Input.GetKey(KeyCode.D)) {
 			x = 1;
-			if (isGrounded)
-			{
+			if (isGrounded) {
 				playerMotion.SetBool("strafeWalking", true);
-			}
-			else
-			{
+			} else {
 				playerMotion.SetBool("strafeWalking", false);
 			}
 		}
-		if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
-		{
+		if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D)) {
 			x = 0;
 			playerMotion.SetBool("strafeWalking", false);
 		}
 
-		if (Input.GetKey(KeyCode.W))
-		{
+		if (Input.GetKey(KeyCode.W)) {
 			z = 1;
-			if (isGrounded)
-			{
+			if (isGrounded) {
 				playerMotion.SetBool("walkingStraight", true);
-			}
-			else
-			{
+			} else {
 				playerMotion.SetBool("walkingStraight", false);
 			}
 		}
-		if (Input.GetKey(KeyCode.S))
-		{
+		if (Input.GetKey(KeyCode.S)) {
 			z = -1;
-			if (isGrounded)
-			{
+			if (isGrounded) {
 				playerMotion.SetBool("walkingStraight", true);
-			}
-			else
-			{
+			} else {
 				playerMotion.SetBool("walkingStraight", false);
 			}
 		}
-		if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S))
-		{
+		if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S)) {
 			z = 0;
 			playerMotion.SetBool("walkingStraight", false);
 		}
 
 		//if player stops moving
-		if (Input.GetKeyUp(KeyCode.A))
-		{
+		if (Input.GetKeyUp(KeyCode.A)) {
 			x = 0;
 			playerMotion.SetBool("strafeWalking", false);
 		}
-		if (Input.GetKeyUp(KeyCode.D))
-		{
+		if (Input.GetKeyUp(KeyCode.D)) {
 			x = 0;
 			playerMotion.SetBool("strafeWalking", false);
 		}
 
-		if (Input.GetKeyUp(KeyCode.W))
-		{
+		if (Input.GetKeyUp(KeyCode.W)) {
 			z = 0;
 			playerMotion.SetBool("walkingStraight", false);
 		}
-		if (Input.GetKeyUp(KeyCode.S))
-		{
+		if (Input.GetKeyUp(KeyCode.S)) {
 			z = 0;
 			playerMotion.SetBool("walkingStraight", false);
 		}
@@ -137,20 +111,13 @@ public class playerMovement : MonoBehaviour
 
 		//if player presses forward and sideways button at the same time, he will gain speed because move will be equal to 2 (x + z = 1 + 1 = 2) so here: characterController.Move(move * speed * Time.deltaTime); the speed of the character will be 2 times greater than the maximum allowed speed and we don't want that so we abstract 1 in total from the speed.
 		Vector3 move = transform.right * x + transform.forward * z;
-		if (move.x > 1)
-		{
+		if (move.x > 1) {
 			move.x -= 0.5f;
-		}
-		else if (move.x < -1)
-		{
+		} else if (move.x < -1) {
 			move.x += 0.5f;
-		}
-		else if (move.z > 1)
-		{
+		} else if (move.z > 1) {
 			move.z -= 0.5f;
-		}
-		else if (move.z < -1)
-		{
+		} else if (move.z < -1) {
 			move.z += 0.5f;
 		}
 
@@ -161,33 +128,27 @@ public class playerMovement : MonoBehaviour
 		characterController.Move(velocity * Time.deltaTime);
 
 		//jumping
-		if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
-		{
+		if (Input.GetKeyDown(KeyCode.Space) && isGrounded) {
 			velocity.y = Mathf.Sqrt(jumpHeight * -2 * playerGravity);
 		}
 
-		if (hitCeiling)
-		{
+		if (hitCeiling) {
 			velocity.y = playerGravity / 10;
 		}
 
 		//spint
-		if (Input.GetKeyDown(KeyCode.LeftShift))
-		{
+		if (Input.GetKeyDown(KeyCode.LeftShift)) {
 			speed += sprintSpeed;
 			maxSpeed += sprintSpeed;
 			playerMotion.SetBool("isRunning", true);
-		}
-		else if (Input.GetKeyUp(KeyCode.LeftShift))
-		{
+		} else if (Input.GetKeyUp(KeyCode.LeftShift)) {
 			speed -= sprintSpeed;
 			maxSpeed -= sprintSpeed;
 			playerMotion.SetBool("isRunning", false);
 		}
 
 		//player Die
-		if (playerDying)
-		{
+		if (playerDying) {
 			playerMotion.SetBool("isDying", true);
 		}
 	}

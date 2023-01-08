@@ -13,8 +13,7 @@ public class zombiePathfinder : MonoBehaviour
 	public float defaultZombieSpeed = 9;
 	bool startRunningToPlayer;
 
-	private void Start()
-	{
+	private void Start() {
 		player = GameObject.Find("player1");
 		playerManager = GameObject.Find("playerManager");
 		toggleNavMeshAgent(0);
@@ -23,16 +22,11 @@ public class zombiePathfinder : MonoBehaviour
 		playerManagerScript = playerManager.GetComponent<playerManager>();
 	}
 
-	private void FixedUpdate()
-	{
-		if (startRunningToPlayer)
-		{
-			if (gameObject.GetComponent<NavMeshAgent>().isActiveAndEnabled && !playerManagerScript.playerDead)
-			{
+	private void FixedUpdate() {
+		if (startRunningToPlayer) {
+			if (gameObject.GetComponent<NavMeshAgent>().isActiveAndEnabled && !playerManagerScript.playerDead) {
 				gameObject.GetComponent<NavMeshAgent>().destination = player.transform.position;
-			}
-			else
-			{
+			} else {
 				gameObject.GetComponent<NavMeshAgent>().enabled = false;
 			}
 		}
@@ -40,24 +34,18 @@ public class zombiePathfinder : MonoBehaviour
 		gameObject.GetComponent<NavMeshAgent>().speed = zombieSpeed;
 	}
 
-	private void OnCollisionEnter(Collision collision)
-	{
-		if (collision.gameObject.tag != "zombieTier1")
-		{
+	private void OnCollisionEnter(Collision collision) {
+		if (collision.gameObject.tag != "zombieTier1") {
 			toggleNavMeshAgent(1);
 			startRunningToPlayer = true;
 		}
 	}
 
-	public void toggleNavMeshAgent(int enableOrDisable)
-	{
-		if (enableOrDisable == 1)
-		{
+	public void toggleNavMeshAgent(int enableOrDisable) {
+		if (enableOrDisable == 1) {
 			gameObject.GetComponent<NavMeshAgent>().enabled = true;
-		}
-		else if (enableOrDisable == 0)
-		{
-			gameObject.GetComponent<NavMeshAgent>().enabled = false;
+		} else if (enableOrDisable == 0) {
+		gameObject.GetComponent<NavMeshAgent>().enabled = false;
 		}
 	}
-}
+} 

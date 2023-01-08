@@ -204,7 +204,6 @@ public class batteryGun : MonoBehaviour
                 && Distance_ScaleRatio.z < minimumIdealDistance_ScaleRatio.z
             )
             {
-                //so Distance_ScaleRatio can be 20 again
                 laserEndPoint.transform.localScale = new Vector3(
                     laser_CameraDistance / minimumIdealDistance_ScaleRatio.x,
                     laser_CameraDistance / minimumIdealDistance_ScaleRatio.y,

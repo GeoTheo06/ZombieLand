@@ -26,6 +26,7 @@ public class playerMovement : MonoBehaviour
 
     public GameObject character;
     Vector3 velocity;
+    Vector3 move;
 
     private void Start()
     {
@@ -38,12 +39,38 @@ public class playerMovement : MonoBehaviour
         hitCeiling = Physics.CheckSphere(ceilingCheck.position, groundDistance, groundMask);
         playerMotion.SetBool("isGrounded", isGrounded);
 
+        playerFalling();
+
+        playerMoving();
+        playerStopsMoving();
+
+        playerMotion.SetFloat("animationSpeed", z);
+        playerMotion.SetFloat("strafeWalkingSpeed", x);
+
+        move = transform.right * x + transform.forward * z;
+
+        fixStrafingUnexpectedSpeed();
+
+        actuallyMoveCharacter();
+
+        playerJumping();
+
+        playerSprinting();
+
+        playerDies();
+    }
+
+    void playerFalling()
+    {
         //falling
         if (isGrounded && velocity.y < 0)
         {
             velocity.y = -2;
         }
+    }
 
+    void playerMoving()
+    {
         //moving with controller
         /*float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");*/
@@ -108,7 +135,10 @@ public class playerMovement : MonoBehaviour
             z = 0;
             playerMotion.SetBool("walkingStraight", false);
         }
+    }
 
+    void playerStopsMoving()
+    {
         //if player stops moving
         if (Input.GetKeyUp(KeyCode.A))
         {
@@ -131,12 +161,12 @@ public class playerMovement : MonoBehaviour
             z = 0;
             playerMotion.SetBool("walkingStraight", false);
         }
+    }
 
-        playerMotion.SetFloat("animationSpeed", z);
-        playerMotion.SetFloat("strafeWalkingSpeed", x);
-
+    void fixStrafingUnexpectedSpeed()
+    {
         //if player presses forward and sideways button at the same time, he will gain speed because move will be equal to 2 (x + z = 1 + 1 = 2) so here: characterController.Move(move * speed * Time.deltaTime); the speed of the character will be 2 times greater than the maximum allowed speed and we don't want that so we abstract 1 in total from the speed.
-        Vector3 move = transform.right * x + transform.forward * z;
+
         if (move.x > 1)
         {
             move.x -= 0.5f;
@@ -153,13 +183,10 @@ public class playerMovement : MonoBehaviour
         {
             move.z += 0.5f;
         }
+    }
 
-        characterController.Move(move * speed * Time.deltaTime);
-
-        velocity.y += playerGravity * Time.deltaTime;
-
-        characterController.Move(velocity * Time.deltaTime);
-
+    void playerJumping()
+    {
         //jumping
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
@@ -170,7 +197,10 @@ public class playerMovement : MonoBehaviour
         {
             velocity.y = playerGravity / 10;
         }
+    }
 
+    void playerSprinting()
+    {
         //spint
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
@@ -184,7 +214,19 @@ public class playerMovement : MonoBehaviour
             maxSpeed -= sprintSpeed;
             playerMotion.SetBool("isRunning", false);
         }
+    }
 
+    void actuallyMoveCharacter()
+    {
+        characterController.Move(move * speed * Time.deltaTime);
+
+        velocity.y += playerGravity * Time.deltaTime;
+
+        characterController.Move(velocity * Time.deltaTime);
+    }
+
+    void playerDies()
+    {
         //player Die
         if (playerDying)
         {

@@ -5,19 +5,14 @@ using UnityEngine;
 public class batteryGun : MonoBehaviour
 {
 	int batteryGunDamage;
-
 	float batteryGunRange, shootDelay, continuousShootDelay, timer, timer1;
 
 	GameObject laserEndPoint;
-
 	Light[] allLights;
-
 	Light flashlight;
-
 	bool playerHasShot, playerCanShoot, playerPendingToShoot;
 
 	ParticleSystem[] searchGunshot;
-
 	ParticleSystem gunshot;
 
 	private void Start()
@@ -32,8 +27,8 @@ public class batteryGun : MonoBehaviour
 		playerCanShoot = true;
 		playerPendingToShoot = false;
 		laserEndPoint = GameObject.Find("laserEndPoint");
-		allLights = FindObjectsOfType<Light>();
 
+		allLights = FindObjectsOfType<Light>();
 		for (int i = 0; i < allLights.Length; i++)
 		{
 			if (allLights[i].name == "flashlight")
@@ -54,44 +49,7 @@ public class batteryGun : MonoBehaviour
 	}
 
 	public Camera cam;
-
 	RaycastHit hitInfo;
-
-	[SerializeField]
-	Transform gunAim;
-
-	[SerializeField]
-	LineRenderer laserSight;
-
-	RaycastHit laserHitInfo;
-
-	private void Update()
-	{
-		playerShooting();
-	}
-
-	int minimumIdealLaserWidthRatio = 200, maximumIdealLaserWidthRatio = 350;
-
-	Vector3 minimumIdealDistance_ScaleRatio = new Vector3(50, 50, 50);
-	Vector3 maximumIdealDistance_ScaleRatio = new Vector3(70, 70, 70);
-
-	float laser_CameraDistance;
-
-	private void LateUpdate()
-	{
-		//laser sight
-		if (Physics.Raycast(cam.transform.position, cam.transform.forward, out laserHitInfo, batteryGunRange))
-		{
-			initialize_and_turn_on_laser();
-			fix_laser_endpoint_size();
-			fix_laser_sight_size();
-			disable_if_too_close_to_wall();
-		} else
-		{
-			laserSight.enabled = false;
-			laserEndPoint.SetActive(false);
-		}
-	}
 
 	void Shoot()
 	{
@@ -108,9 +66,47 @@ public class batteryGun : MonoBehaviour
 			}
 		}
 	}
-	void playerShooting()
+
+	[SerializeField]
+	Transform gunAim;
+
+	[SerializeField]
+	LineRenderer laserSight;
+	RaycastHit laserHitInfo;
+
+	bool stopCounting;
+
+	private void Update()
 	{
-		//if the player is just pressing click once
+		playerShooting();
+	}
+
+	int minimumIdealLaserWidthRatio = 200;
+	int maximumIdealLaserWidthRatio = 350;
+	Vector3 minimumIdealDistance_ScaleRatio = new Vector3(50, 50, 50);
+	Vector3 maximumIdealDistance_ScaleRatio = new Vector3(70, 70, 70);
+	float laser_CameraDistance;
+	private void LateUpdate()
+	{
+		//laser sight
+
+		if (Physics.Raycast(cam.transform.position, cam.transform.forward, out laserHitInfo, batteryGunRange))
+		{
+			initialize_and_turn_on_laser();
+			laser_CameraDistance = Vector3.Distance(cam.transform.position, laserHitInfo.point);
+
+			fix_laser_endpoint_size();
+			fix_laser_sight_size();
+			disable_if_too_close_to_wall();
+		} else
+		{
+			laserSight.enabled = false;
+			laserEndPoint.SetActive(false);
+		}
+	}
+
+	void playerShooting()
+	{ //if the player is just pressing click once
 		if (Input.GetKeyDown(KeyCode.Mouse0))
 		{
 			if (playerCanShoot)
@@ -179,20 +175,20 @@ public class batteryGun : MonoBehaviour
 		laserSight.SetPosition(1, laserHitInfo.point);
 
 		laserEndPoint.transform.position = laserHitInfo.point;
-
-		laser_CameraDistance = Vector3.Distance(cam.transform.position, laserHitInfo.point);
 	}
-	void disable_if_too_close_to_wall()
-	{
-		//Debug.Log("Distance_ScaleLaserRatio: " + Distance_ScaleLaserRatio);
-		if (laser_CameraDistance < 2)
+	void fix_laser_endpoint_size()
+	{ //keep laserEndPoint in a realistic size range regarding distance
+
+		Vector3 Distance_ScaleRatio = new Vector3(laser_CameraDistance / laserEndPoint.transform.localScale.x, laser_CameraDistance / laserEndPoint.transform.localScale.y, laser_CameraDistance / laserEndPoint.transform.localScale.z);
+		//Debug.Log("Distance_ScaleRatio: " + Distance_ScaleRatio);
+
+		if (Distance_ScaleRatio.x < minimumIdealDistance_ScaleRatio.x && Distance_ScaleRatio.y < minimumIdealDistance_ScaleRatio.y && Distance_ScaleRatio.z < minimumIdealDistance_ScaleRatio.z)
 		{
-			laserSight.enabled = false;
-			laserEndPoint.SetActive(false);
-		} else
+			laserEndPoint.transform.localScale = new Vector3(laser_CameraDistance / minimumIdealDistance_ScaleRatio.x, laser_CameraDistance / minimumIdealDistance_ScaleRatio.y, laser_CameraDistance / minimumIdealDistance_ScaleRatio.z);
+		}
+		if (Distance_ScaleRatio.x > maximumIdealDistance_ScaleRatio.x && Distance_ScaleRatio.y > maximumIdealDistance_ScaleRatio.y && Distance_ScaleRatio.z > maximumIdealDistance_ScaleRatio.z)
 		{
-			laserSight.enabled = true;
-			laserEndPoint.SetActive(true);
+			laserEndPoint.transform.localScale = new Vector3(laser_CameraDistance / maximumIdealDistance_ScaleRatio.x, laser_CameraDistance / maximumIdealDistance_ScaleRatio.y, laser_CameraDistance / maximumIdealDistance_ScaleRatio.z);
 		}
 	}
 	void fix_laser_sight_size()
@@ -208,20 +204,18 @@ public class batteryGun : MonoBehaviour
 		{
 			laserSight.endWidth = laser_CameraDistance / maximumIdealLaserWidthRatio;
 		}
+		//Debug.Log("Distance_ScaleLaserRatio: " + Distance_ScaleLaserRatio);
 	}
-	void fix_laser_endpoint_size()
+	void disable_if_too_close_to_wall()
 	{
-		//keep laserEndPoint in a realistic size range regarding distance
-		Vector3 Distance_ScaleRatio = new Vector3(laser_CameraDistance / laserEndPoint.transform.localScale.x, laserEndPoint.transform.localScale.y, laser_CameraDistance / laserEndPoint.transform.localScale.z);
-
-		//Debug.Log("Distance_ScaleRatio: " + Distance_ScaleRatio);
-		if (Distance_ScaleRatio.x < minimumIdealDistance_ScaleRatio.x && Distance_ScaleRatio.y < minimumIdealDistance_ScaleRatio.y && Distance_ScaleRatio.z < minimumIdealDistance_ScaleRatio.z)
+		if (laser_CameraDistance < 2)
 		{
-			laserEndPoint.transform.localScale = new Vector3(laser_CameraDistance / minimumIdealDistance_ScaleRatio.x, laser_CameraDistance / minimumIdealDistance_ScaleRatio.y, laser_CameraDistance / minimumIdealDistance_ScaleRatio.z);
-		}
-		if (Distance_ScaleRatio.x > maximumIdealDistance_ScaleRatio.x && Distance_ScaleRatio.y > maximumIdealDistance_ScaleRatio.y && Distance_ScaleRatio.z > maximumIdealDistance_ScaleRatio.z)
+			laserSight.enabled = false;
+			laserEndPoint.SetActive(false);
+		} else
 		{
-			laserEndPoint.transform.localScale = new Vector3(laser_CameraDistance / maximumIdealDistance_ScaleRatio.x, laser_CameraDistance / maximumIdealDistance_ScaleRatio.y, laser_CameraDistance / maximumIdealDistance_ScaleRatio.z);
+			laserSight.enabled = true;
+			laserEndPoint.SetActive(true);
 		}
 	}
 }

@@ -33,7 +33,7 @@ namespace danilec
         }
         private void Update()
         {
-            if(obj || refObj)
+            if (obj || refObj)
                 if (obj != refObj)
                 {
                     clearData();
@@ -55,7 +55,7 @@ namespace danilec
 
             GUILayout.Space(20);
             groundYOffset = EditorGUILayout.FloatField("Ground Y offset:", groundYOffset);
-            if(refGroundOffset != groundYOffset)
+            if (refGroundOffset != groundYOffset)
             {
                 if (obj == null)
                     return;
@@ -72,7 +72,7 @@ namespace danilec
                     preview();
                 }
             }
-            
+
 
             var btnStyle1 = new GUIStyle(GUI.skin.button);
             btnStyle1.fontSize = 18;
@@ -163,7 +163,7 @@ namespace danilec
 
             Color[] colors = currentMeshCopy.colors;
 
-            if(colors.Length > 0)
+            if (colors.Length > 0)
             {
                 for (int i = 0; i < vCount; i++)
                 {
@@ -175,8 +175,8 @@ namespace danilec
                 }
                 currentMeshCopy.SetColors(colors);
             }
-           
-            if(colors.Length == 0)
+
+            if (colors.Length == 0)
             {
                 colors = new Color[vCount];
                 for (int i = 0; i < vCount; i++)
@@ -188,7 +188,7 @@ namespace danilec
                 currentMeshCopy.SetColors(colors);
             }
 
-            
+
 
             string path = EditorUtility.SaveFilePanelInProject("Choose location for a new Mesh to save", currentMeshCopy.name, "asset", "Save mesh");
             AssetDatabase.CreateAsset(currentMeshCopy, path);

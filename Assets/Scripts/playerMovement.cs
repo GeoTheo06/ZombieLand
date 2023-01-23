@@ -5,22 +5,28 @@ using UnityEngine;
 public class playerMovement : MonoBehaviour
 {
 	public CharacterController characterController;
-	float speed = 5, maxSpeed, playerGravity = -40, jumpHeight = 1.5f, groundDistance = 0.4f,
-	sprintSpeed = 5, x, z;
+	float speed = 5, maxSpeed, playerGravity = -40, jumpHeight = 1.5f, groundDistance = 0.4f, sprintSpeed = 5, x, z, cameraStartingY, characterControllerStartingCenterY, characterControllerStartingHeight, cameraCrouchingY = 0.897f, characterControllerCrouchingCenterY = 0.627f, characterControllerCrouchingHeight = 1.23f;
 
 	public Transform groundCheck, ceilingCheck;
 	public LayerMask groundMask;
-	bool isGrounded, hitCeiling;
+	bool isGrounded, hitCeiling, crouching;
 	public bool playerDying = false;
 
 	public Animator playerMotion;
-
 	public GameObject character;
 	Vector3 velocity, move;
-
+	GameObject camera1;
+	Vector3 cameraCoordinates;
 	private void Start()
 	{
 		maxSpeed = speed;
+		camera1 = GameObject.Find("camera1");
+		cameraCoordinates = camera1.transform.localPosition;
+
+		//getting the default values (as the game starts)
+		cameraStartingY = cameraCoordinates.y;
+		characterControllerStartingCenterY = characterController.center.y;
+		characterControllerStartingHeight = characterController.height;
 	}
 
 	private void Update()
@@ -43,6 +49,16 @@ public class playerMovement : MonoBehaviour
 		playerJumping();
 		playerSprinting();
 		playerDies();
+
+		if (Input.GetKeyDown(KeyCode.LeftControl))
+		{
+			crouching = true;
+			playerCrouching();
+		} else if (Input.GetKeyUp(KeyCode.LeftControl))
+		{
+			crouching = false;
+			playerCrouching();
+		}
 	}
 
 	void playerFalling()
@@ -209,5 +225,30 @@ public class playerMovement : MonoBehaviour
 		{
 			playerMotion.SetBool("isDying", true);
 		}
+	}
+
+	void playerCrouching()
+	{
+
+		if (crouching)
+		{
+			//set character controller center
+			characterController.center = new Vector3(0, characterControllerCrouchingCenterY, 0);
+			characterController.height = characterControllerCrouchingHeight;
+
+			//set camera position
+			Debug.Log(camera1.transform.localPosition.x + " " + camera1.transform.localPosition.y + " " + camera1.transform.localPosition.z);
+			camera1.transform.localPosition = new Vector3(cameraCoordinates.x, cameraCrouchingY, cameraCoordinates.z);
+			Debug.Log(camera1.transform.localPosition.x + " " + camera1.transform.localPosition.y + " " + camera1.transform.localPosition.z);
+		} else
+		{
+			//set character controller center
+			characterController.center = new Vector3(0, characterControllerStartingCenterY, 0);
+			characterController.height = characterControllerStartingHeight;
+
+			//set camera position
+			camera1.transform.localPosition = new Vector3(cameraCoordinates.x, cameraStartingY, cameraCoordinates.z);
+		}
+		Debug.Log(camera1.transform.localPosition.x + " " + camera1.transform.localPosition.y + " " + camera1.transform.localPosition.z);
 	}
 }

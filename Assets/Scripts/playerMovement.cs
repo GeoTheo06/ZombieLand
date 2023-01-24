@@ -50,6 +50,7 @@ public class playerMovement : MonoBehaviour
 		playerSprinting();
 		playerDies();
 
+
 		if (Input.GetKeyDown(KeyCode.LeftControl))
 		{
 			crouching = true;
@@ -237,9 +238,9 @@ public class playerMovement : MonoBehaviour
 			characterController.height = characterControllerCrouchingHeight;
 
 			//set camera position
-			Debug.Log(camera1.transform.localPosition.x + " " + camera1.transform.localPosition.y + " " + camera1.transform.localPosition.z);
+
 			camera1.transform.localPosition = new Vector3(cameraCoordinates.x, cameraCrouchingY, cameraCoordinates.z);
-			Debug.Log(camera1.transform.localPosition.x + " " + camera1.transform.localPosition.y + " " + camera1.transform.localPosition.z);
+
 		} else
 		{
 			//set character controller center
@@ -249,6 +250,5 @@ public class playerMovement : MonoBehaviour
 			//set camera position
 			camera1.transform.localPosition = new Vector3(cameraCoordinates.x, cameraStartingY, cameraCoordinates.z);
 		}
-		Debug.Log(camera1.transform.localPosition.x + " " + camera1.transform.localPosition.y + " " + camera1.transform.localPosition.z);
 	}
 }

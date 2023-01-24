@@ -14,7 +14,7 @@ public class playerManager : MonoBehaviour
 	CharacterController characterController;
 
 	public Animator cameraDie;
-	Vector3 startOfCharacterController, endOfCharacterController;
+	Vector3 bottomOfCharacterController, topOfCharacterController;
 
 	private void Start()
 	{
@@ -24,11 +24,12 @@ public class playerManager : MonoBehaviour
 		cameraMovementScript = camera1.GetComponent<cameraMovement>();
 		groundCheck = GameObject.Find("groundCheck");
 		ceilingCheck = GameObject.Find("ceilingCheck");
-		characterController = GameObject.Find("player1").GetComponent<CharacterController>();
+		characterController = player.GetComponent<CharacterController>();
 	}
 
 	private void Update()
 	{
+
 		set_groundCheck_ceilingCheck_position();
 
 		if (playerHealth <= 0)
@@ -40,10 +41,10 @@ public class playerManager : MonoBehaviour
 	void set_groundCheck_ceilingCheck_position()
 	{
 		//set groundCheck, ceilingCheck position
-		startOfCharacterController = new Vector3(characterController.transform.position.x, 0, characterController.transform.position.z);
-		endOfCharacterController = new Vector3(characterController.transform.position.x, characterController.center.y + characterController.height, characterController.transform.position.z);
-		groundCheck.transform.position = startOfCharacterController;
-		ceilingCheck.transform.position = endOfCharacterController;
+		bottomOfCharacterController = new Vector3(characterController.transform.position.x, 0, characterController.transform.position.z);
+		topOfCharacterController = new Vector3(characterController.transform.position.x, characterController.transform.position.y + characterController.height / 2, characterController.transform.position.z); ;
+		groundCheck.transform.position = bottomOfCharacterController;
+		ceilingCheck.transform.position = topOfCharacterController;
 	}
 	void playerDies()
 	{

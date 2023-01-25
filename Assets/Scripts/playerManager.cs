@@ -9,7 +9,7 @@ public class playerManager : MonoBehaviour
 	playerMovement playerMovementScript;
 	cameraMovement cameraMovementScript;
 	public int playerHealth;
-	public bool playerDead = false;
+	public bool playerDead;
 	GameObject groundCheck, ceilingCheck;
 	CharacterController characterController;
 
@@ -19,6 +19,10 @@ public class playerManager : MonoBehaviour
 	private void Start()
 	{
 		player = GameObject.Find("player1");
+		gameManager = GameObject.Find("gameManager");
+		camera1 = GameObject.Find("camera1");
+		playerHealth = 1000;
+		playerDead = false;
 		playerMovementScript = player.GetComponent<playerMovement>();
 		gameManagerScript = gameManager.GetComponent<gameManager1>();
 		cameraMovementScript = camera1.GetComponent<cameraMovement>();

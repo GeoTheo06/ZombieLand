@@ -5,18 +5,21 @@ using UnityEngine;
 public class playerMovement : MonoBehaviour
 {
 	public CharacterController characterController;
-	float speed = 5, maxSpeed, playerGravity = -40, jumpHeight = 1.5f, groundDistance = 0.4f, sprintSpeed = 5, x, z, cameraStartingY, characterControllerStartingCenterY, characterControllerStartingHeight, cameraCrouchingY = 0.897f, characterControllerCrouchingCenterY = 0.627f, characterControllerCrouchingHeight = 1.23f;
+	float speed = 5, maxSpeed, playerGravity = -40, jumpHeight = 1.5f, groundDistance = 0.4f, sprintSpeed = 5, x, z, characterControllerStartingCenterY, characterControllerStartingHeight, characterControllerCrouchingCenterY = 0.627f, characterControllerCrouchingHeight = 1.23f;
+
+	public float cameraStartingY, cameraCrouchingY = 0.897f;
 
 	public Transform groundCheck, ceilingCheck;
 	public LayerMask groundMask;
-	bool isGrounded, hitCeiling, crouching;
-	public bool playerDying = false;
+	bool isGrounded, hitCeiling;
+	public bool crouching;
 
 	public Animator playerMotion;
 	public GameObject character;
 	Vector3 velocity, move;
 	GameObject camera1;
 	Vector3 cameraCoordinates;
+	public bool playerDying = false;
 	private void Start()
 	{
 		maxSpeed = speed;
@@ -60,6 +63,7 @@ public class playerMovement : MonoBehaviour
 			crouching = false;
 			playerCrouching();
 		}
+
 	}
 
 	void playerFalling()
@@ -239,7 +243,6 @@ public class playerMovement : MonoBehaviour
 
 			//set camera position
 
-			camera1.transform.localPosition = new Vector3(cameraCoordinates.x, cameraCrouchingY, cameraCoordinates.z);
 
 		} else
 		{

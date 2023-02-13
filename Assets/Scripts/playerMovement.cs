@@ -241,9 +241,7 @@ public class playerMovement : MonoBehaviour
 			characterController.center = new Vector3(0, characterControllerCrouchingCenterY, 0);
 			characterController.height = characterControllerCrouchingHeight;
 
-			//set camera position
-
-
+			//camera position is set in cameraMovement script
 		} else
 		{
 			//set character controller center

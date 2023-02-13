@@ -9,10 +9,11 @@ public class cameraMovement : MonoBehaviour
 	float xRotation = 0f;
 
 	playerMovement playerMovementScript;
-
+	GameObject player;
 	private void Start()
 	{
-		playerMovementScript = GetComponent<playerMovement>();
+		player = GameObject.Find("player1");
+		playerMovementScript = player.GetComponent<playerMovement>();
 		mouseSensitivity = 250;
 		Cursor.lockState = CursorLockMode.Locked;
 	}
@@ -30,7 +31,7 @@ public class cameraMovement : MonoBehaviour
 
 		if (playerMovementScript.crouching)
 		{
-			transform.position = new Vector3(0, 0, 0);
+			transform.position = new Vector3(transform.position.x, playerMovementScript.cameraCrouchingY, transform.position.z);
 		}
 	}
 }

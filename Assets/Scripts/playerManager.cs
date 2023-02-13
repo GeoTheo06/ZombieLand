@@ -45,10 +45,11 @@ public class playerManager : MonoBehaviour
 	void set_groundCheck_ceilingCheck_position()
 	{
 		//set groundCheck, ceilingCheck position
-		bottomOfCharacterController = new Vector3(characterController.transform.position.x, 0, characterController.transform.position.z);
-		topOfCharacterController = new Vector3(characterController.transform.position.x, characterController.transform.position.y + characterController.height / 2, characterController.transform.position.z); ;
-		groundCheck.transform.position = bottomOfCharacterController;
-		ceilingCheck.transform.position = topOfCharacterController;
+
+		groundCheck.transform.position = new Vector3(characterController.transform.position.x, player.transform.position.y, characterController.transform.position.z);
+
+		ceilingCheck.transform.localPosition = new Vector3(0, characterController.height, 0);
+
 	}
 	void playerDies()
 	{

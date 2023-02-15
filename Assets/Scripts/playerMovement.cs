@@ -5,7 +5,7 @@ using UnityEngine;
 public class playerMovement : MonoBehaviour
 {
 	public CharacterController characterController;
-	float speed = 5, maxSpeed, playerGravity = -40, jumpHeight = 1.5f, groundDistance = 0.4f, sprintSpeed = 5, x, z, characterControllerStartingCenterY, characterControllerStartingHeight, characterControllerCrouchingCenterY = 0.627f, characterControllerCrouchingHeight = 1.23f;
+	float speed = 5, playerGravity = -40, jumpHeight = 1.5f, groundDistance = 0.4f, sprintSpeed = 5, x, z, characterControllerStartingCenterY, characterControllerStartingHeight, characterControllerCrouchingCenterY = 0.627f, characterControllerCrouchingHeight = 1.23f;
 
 	public float cameraStartingY, cameraCrouchingY = 0.897f;
 
@@ -22,7 +22,6 @@ public class playerMovement : MonoBehaviour
 	public bool playerDying = false;
 	private void Start()
 	{
-		maxSpeed = speed;
 		camera1 = GameObject.Find("camera1");
 		cameraCoordinates = camera1.transform.localPosition;
 
@@ -54,11 +53,11 @@ public class playerMovement : MonoBehaviour
 		playerDies();
 
 
-		if (Input.GetKeyDown(KeyCode.LeftControl))
+		if (Input.GetKeyDown(KeyCode.C))
 		{
 			crouching = true;
 			playerCrouching();
-		} else if (Input.GetKeyUp(KeyCode.LeftControl))
+		} else if (Input.GetKeyUp(KeyCode.C))
 		{
 			crouching = false;
 			playerCrouching();
@@ -204,12 +203,10 @@ public class playerMovement : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.LeftShift))
 		{
 			speed += sprintSpeed;
-			maxSpeed += sprintSpeed;
 			playerMotion.SetBool("isRunning", true);
 		} else if (Input.GetKeyUp(KeyCode.LeftShift))
 		{
 			speed -= sprintSpeed;
-			maxSpeed -= sprintSpeed;
 			playerMotion.SetBool("isRunning", false);
 		}
 	}

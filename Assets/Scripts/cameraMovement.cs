@@ -33,8 +33,5 @@ public class cameraMovement : MonoBehaviour
 		transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
 
 		transform.position = new Vector3(transform.position.x, ceilingCheck.transform.position.y - 0.2f, transform.position.z);
-		if (playerMovementScript.crouching)
-		{
-		}
 	}
 }

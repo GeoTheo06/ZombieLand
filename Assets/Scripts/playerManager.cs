@@ -15,7 +15,7 @@ public class playerManager : MonoBehaviour
 
 	public Animator cameraDie;
 	Vector3 bottomOfCharacterController, topOfCharacterController;
-	//just testing local version controll
+
 	private void Start()
 	{
 		player = GameObject.Find("player1");

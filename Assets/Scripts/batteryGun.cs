@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+//still setting up local VC
 public class batteryGun : MonoBehaviour
 {
 	int batteryGunDamage;

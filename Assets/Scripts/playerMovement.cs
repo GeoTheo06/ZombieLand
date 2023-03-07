@@ -5,13 +5,13 @@ using UnityEngine;
 public class playerMovement : MonoBehaviour
 {
 	public CharacterController characterController;
-	float speed = 5, playerGravity = -40, jumpHeight = 1.5f, groundDistance = 0.4f, sprintSpeed = 5, x, z, characterControllerStartingCenterY, characterControllerStartingHeight, characterControllerCrouchingCenterY = 0.627f, characterControllerCrouchingHeight = 1.23f;
+	float speed = 5, playerGravity = -40, jumpHeight = 1.5f, groundDistance = 0.4f, sprintSpeed = 5, x, z, characterControllerStartingCenterY, characterControllerStartingHeight, characterControllerCrouchingCenterY = 0.627f, characterControllerCrouchingHeight = 1.23f, timer = 0, jumpDelay = 0.15f;
 
 	public float cameraStartingY, cameraCrouchingY = 0.897f;
 
 	public Transform groundCheck, ceilingCheck;
 	public LayerMask groundMask;
-	bool isGrounded, hitCeiling;
+	bool isGrounded, hitCeiling, canJump;
 	public bool crouching;
 
 	public Animator playerMotion;
@@ -57,7 +57,8 @@ public class playerMovement : MonoBehaviour
 		{
 			crouching = true;
 			playerCrouching();
-		} else if (Input.GetKeyUp(KeyCode.C))
+		}
+		else if (Input.GetKeyUp(KeyCode.C))
 		{
 			crouching = false;
 			playerCrouching();
@@ -87,7 +88,8 @@ public class playerMovement : MonoBehaviour
 			if (isGrounded)
 			{
 				playerMotion.SetBool("strafeWalking", true);
-			} else
+			}
+			else
 			{
 				playerMotion.SetBool("strafeWalking", false);
 			}
@@ -98,7 +100,8 @@ public class playerMovement : MonoBehaviour
 			if (isGrounded)
 			{
 				playerMotion.SetBool("strafeWalking", true);
-			} else
+			}
+			else
 			{
 				playerMotion.SetBool("strafeWalking", false);
 			}
@@ -115,7 +118,8 @@ public class playerMovement : MonoBehaviour
 			if (isGrounded)
 			{
 				playerMotion.SetBool("walkingStraight", true);
-			} else
+			}
+			else
 			{
 				playerMotion.SetBool("walkingStraight", false);
 			}
@@ -126,7 +130,8 @@ public class playerMovement : MonoBehaviour
 			if (isGrounded)
 			{
 				playerMotion.SetBool("walkingStraight", true);
-			} else
+			}
+			else
 			{
 				playerMotion.SetBool("walkingStraight", false);
 			}
@@ -171,13 +176,16 @@ public class playerMovement : MonoBehaviour
 		if (move.x > 1)
 		{
 			move.x -= 0.5f;
-		} else if (move.x < -1)
+		}
+		else if (move.x < -1)
 		{
 			move.x += 0.5f;
-		} else if (move.z > 1)
+		}
+		else if (move.z > 1)
 		{
 			move.z -= 0.5f;
-		} else if (move.z < -1)
+		}
+		else if (move.z < -1)
 		{
 			move.z += 0.5f;
 		}
@@ -185,16 +193,26 @@ public class playerMovement : MonoBehaviour
 
 	void playerJumping()
 	{
+		if (isGrounded && !canJump)
+		{
+			timer += Time.deltaTime;
+			if (timer >= jumpDelay)
+				canJump = true;
+		}
+
 		//jumping
-		if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+		if (Input.GetKey(KeyCode.Space) && isGrounded && canJump)
 		{
 			velocity.y = Mathf.Sqrt(jumpHeight * -2 * playerGravity);
+			timer = 0;
+			canJump = false;
 		}
 
 		if (hitCeiling)
 		{
 			velocity.y = playerGravity / 10;
 		}
+
 	}
 
 	void playerSprinting()
@@ -204,7 +222,8 @@ public class playerMovement : MonoBehaviour
 		{
 			speed += sprintSpeed;
 			playerMotion.SetBool("isRunning", true);
-		} else if (Input.GetKeyUp(KeyCode.LeftShift))
+		}
+		else if (Input.GetKeyUp(KeyCode.LeftShift))
 		{
 			speed -= sprintSpeed;
 			playerMotion.SetBool("isRunning", false);
@@ -239,7 +258,8 @@ public class playerMovement : MonoBehaviour
 			characterController.height = characterControllerCrouchingHeight;
 
 			//camera position is set in cameraMovement script
-		} else
+		}
+		else
 		{
 			//set character controller center
 			characterController.center = new Vector3(0, characterControllerStartingCenterY, 0);

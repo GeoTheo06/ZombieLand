@@ -5,7 +5,7 @@ using UnityEngine;
 public class playerMovement : MonoBehaviour
 {
 	public CharacterController characterController;
-	float speed = 5, playerGravity = -40, jumpHeight = 1.5f, groundDistance = 0.4f, sprintSpeed = 5, x, z, characterControllerStartingCenterY, characterControllerStartingHeight, characterControllerCrouchingCenterY = 0.627f, characterControllerCrouchingHeight = 1.23f, timer = 0, jumpDelay = 0.15f;
+	float currentSpeed = 0, normalSpeed = 5, playerGravity = -40, jumpHeight = 1.5f, groundDistance = 0.4f, sprintSpeed = 10, x, z, characterControllerStartingCenterY, characterControllerStartingHeight, characterControllerCrouchingCenterY = 0.627f, characterControllerCrouchingHeight = 1.23f, timer = 0, jumpDelay = 0.15f;
 
 	public float cameraStartingY, cameraCrouchingY = 0.897f;
 
@@ -217,22 +217,22 @@ public class playerMovement : MonoBehaviour
 
 	void playerSprinting()
 	{
-		//spint
 		if (Input.GetKeyDown(KeyCode.LeftShift))
 		{
-			speed += sprintSpeed;
+			currentSpeed = sprintSpeed;
 			playerMotion.SetBool("isRunning", true);
 		}
-		else if (Input.GetKeyUp(KeyCode.LeftShift))
+		else if (Input.GetKeyUp(KeyCode.LeftShift) || crouching)
 		{
-			speed -= sprintSpeed;
+			currentSpeed = normalSpeed;
 			playerMotion.SetBool("isRunning", false);
 		}
+
 	}
 
 	void actuallyMoveCharacter()
 	{
-		characterController.Move(move * speed * Time.deltaTime);
+		characterController.Move(move * currentSpeed * Time.deltaTime);
 
 		velocity.y += playerGravity * Time.deltaTime;
 

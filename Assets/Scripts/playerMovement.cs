@@ -14,6 +14,9 @@ public class playerMovement : MonoBehaviour
 	bool isGrounded, hitCeiling, canJump;
 	public bool crouching;
 
+	GameObject gameManager;
+	gameManager1 gameManagerScript;
+
 	public Animator playerMotion;
 	public GameObject character;
 	Vector3 velocity, move;
@@ -24,6 +27,9 @@ public class playerMovement : MonoBehaviour
 	{
 		camera1 = GameObject.Find("camera1");
 		cameraCoordinates = camera1.transform.localPosition;
+
+		gameManager = GameObject.Find("gameManager");
+		gameManagerScript = gameManager.GetComponent<gameManager1>();
 
 		//getting the default values (as the game starts)
 		cameraStartingY = cameraCoordinates.y;
@@ -44,26 +50,28 @@ public class playerMovement : MonoBehaviour
 		playerMotion.SetFloat("animationSpeed", z);
 		playerMotion.SetFloat("strafeWalkingSpeed", x);
 
-		move = transform.right * x + transform.forward * z;
-
-		fixStrafingUnexpectedSpeed();
-		actuallyMoveCharacter();
-		playerJumping();
-		playerSprinting();
-		playerDies();
-
-
-		if (Input.GetKeyDown(KeyCode.C))
+		if (!gameManagerScript.gameOver)
 		{
-			crouching = true;
-			playerCrouching();
-		}
-		else if (Input.GetKeyUp(KeyCode.C))
-		{
-			crouching = false;
-			playerCrouching();
-		}
+			move = transform.right * x + transform.forward * z;
 
+			fixStrafingUnexpectedSpeed();
+			actuallyMoveCharacter();
+			playerJumping();
+			playerSprinting();
+			playerDies();
+
+
+			if (Input.GetKeyDown(KeyCode.C))
+			{
+				crouching = true;
+				playerCrouching();
+			}
+			else if (Input.GetKeyUp(KeyCode.C))
+			{
+				crouching = false;
+				playerCrouching();
+			}
+		}
 	}
 
 	void playerFalling()
@@ -79,7 +87,7 @@ public class playerMovement : MonoBehaviour
 	{
 		//moving with controller
 		/*float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");*/
+		float z = Input.GetAxis("Vertical");*/
 
 		//player starts pressing buttons to move
 		if (Input.GetKey(KeyCode.A))

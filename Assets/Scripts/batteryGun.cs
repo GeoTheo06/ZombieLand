@@ -8,6 +8,8 @@ public class batteryGun : MonoBehaviour
 	float batteryGunRange, shootDelay, continuousShootDelay, timer, timer1;
 
 	GameObject laserEndPoint;
+	GameObject gameManager;
+	gameManager1 gameManagerScript;
 	Light[] allLights;
 	Light flashlight;
 	bool playerHasShot, playerCanShoot, playerPendingToShoot;
@@ -17,6 +19,8 @@ public class batteryGun : MonoBehaviour
 
 	private void Start()
 	{
+		gameManager = GameObject.Find("gameManager");
+		gameManagerScript = gameManager.GetComponent<gameManager1>();
 		shootDelay = 0.4f;
 		continuousShootDelay = 0.3f;
 		batteryGunDamage = 20;
@@ -90,7 +94,7 @@ public class batteryGun : MonoBehaviour
 	{
 		//laser sight
 
-		if (Physics.Raycast(cam.transform.position, cam.transform.forward, out laserHitInfo, batteryGunRange))
+		if (Physics.Raycast(cam.transform.position, cam.transform.forward, out laserHitInfo, batteryGunRange) && !gameManagerScript.gameOver)
 		{
 			initialize_and_turn_on_laser();
 			laser_CameraDistance = Vector3.Distance(cam.transform.position, laserHitInfo.point);
@@ -98,7 +102,8 @@ public class batteryGun : MonoBehaviour
 			fix_laser_endpoint_size();
 			fix_laser_sight_size();
 			disable_if_too_close_to_wall();
-		} else
+		}
+		else
 		{
 			laserSight.enabled = false;
 			laserEndPoint.SetActive(false);
@@ -113,7 +118,8 @@ public class batteryGun : MonoBehaviour
 			{
 				Shoot();
 				playerHasShot = true;
-			} else
+			}
+			else
 			{
 				//if player tries to shoot before the shootdelay
 				playerHasShot = false;
@@ -212,7 +218,8 @@ public class batteryGun : MonoBehaviour
 		{
 			laserSight.enabled = false;
 			laserEndPoint.SetActive(false);
-		} else
+		}
+		else
 		{
 			laserSight.enabled = true;
 			laserEndPoint.SetActive(true);

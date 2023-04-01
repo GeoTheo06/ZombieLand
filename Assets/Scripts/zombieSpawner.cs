@@ -7,9 +7,12 @@ public class zombieSpawner : MonoBehaviour
 {
 	GameObject[] playersPosition;
 	public GameObject zombieTier1;
-	int loopCounter = 0, makeXNegative, makeZNegative;
-
-	int randomXSpawnDistance, randomZSpawnDistance, playerToZombieSpawnPositionsDistance, zombieCountSpawn;
+	GameObject gameManager;
+	gameManager1 gameManagerScript;
+	int makeXNegative, makeZNegative;
+	public int loopCounter = 0;
+	int randomXSpawnDistance, randomZSpawnDistance, playerToZombieSpawnPositionsDistance, zombieCountSpawn, zombieSpawnLimit;
+	public int zombiesDeadCount;
 
 	GameObject zombie, mapBound1, mapBound2, mapBound3, mapBound4;
 
@@ -20,8 +23,11 @@ public class zombieSpawner : MonoBehaviour
 		mapBound3 = GameObject.Find("mapBound3");
 		mapBound4 = GameObject.Find("mapBound4");
 		playersPosition = GameObject.FindGameObjectsWithTag("Player");
+		gameManager = GameObject.Find("gameManager");
+		gameManagerScript = gameManager.GetComponent<gameManager1>();
 		playerToZombieSpawnPositionsDistance = 100;
-		zombieCountSpawn = 30;
+		zombieCountSpawn = 1000;
+		zombieSpawnLimit = 15;
 		StartCoroutine(zombiesSpawn());
 	}
 
@@ -29,7 +35,7 @@ public class zombieSpawner : MonoBehaviour
 	int spawnZLocation;
 	IEnumerator zombiesSpawn()
 	{
-		while (loopCounter < zombieCountSpawn)
+		while (loopCounter < zombieCountSpawn && gameManagerScript.zombiesALive < zombieSpawnLimit)
 		{
 			randomXSpawnDistance = UnityEngine.Random.Range(1, playerToZombieSpawnPositionsDistance);
 			randomZSpawnDistance = playerToZombieSpawnPositionsDistance - randomXSpawnDistance;
@@ -58,7 +64,7 @@ public class zombieSpawner : MonoBehaviour
 				loopCounter += 1;
 			}
 
-			yield return new WaitForSeconds(0.1f); //I need this because a coroutine needs a return value
+			yield return new WaitForSeconds(0.5f); //I need this because a coroutine needs a return value
 		}
 	}
 

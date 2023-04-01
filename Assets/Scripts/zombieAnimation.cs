@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class zombieAnimation : MonoBehaviour
 {
@@ -8,13 +9,14 @@ public class zombieAnimation : MonoBehaviour
 	GameObject gameManager;
 	gameManager1 gameManagerScript;
 
-	public zombiePathfinder zombiePathFinderScript;
-	public zombieManager zombieManagerScript;
+	zombieManager zombieManagerScript;
+
 
 	private void Start()
 	{
 		gameManager = GameObject.Find("gameManager");
 		gameManagerScript = gameManager.GetComponent<gameManager1>();
+		zombieManagerScript = GetComponent<zombieManager>();
 	}
 
 	private void Update()
@@ -23,12 +25,11 @@ public class zombieAnimation : MonoBehaviour
 		zombieAttacking();
 		zombieDying();
 		zombieIdle();
-
 	}
 
 	void zombieRunning()
 	{
-		if (zombiePathFinderScript.zombieSpeed > 1)
+		if (gameObject.GetComponent<NavMeshAgent>().speed > 1)
 		{
 			zombieAnimator.SetBool("isRunning", true);
 			zombieAnimator.SetBool("isAttacking", false);
@@ -42,7 +43,8 @@ public class zombieAnimation : MonoBehaviour
 		{
 			zombieAnimator.SetBool("isRunning", false);
 			zombieAnimator.SetBool("isAttacking", true);
-		} else
+		}
+		else
 		{
 			zombieAnimator.SetBool("isAttacking", false);
 			zombieAnimator.SetBool("isRunning", true);

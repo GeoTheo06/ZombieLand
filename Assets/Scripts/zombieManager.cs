@@ -2,14 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.AI;
 
 public class zombieManager : MonoBehaviour
 {
 	GameObject player, playerManager, zombieChild, bloodPS, bloodChild1, bloodChild2;
 
-	public zombiePathfinder zombiePathFinderScript;
 	public zombieAnimation zombieAnimationScript;
 	playerManager playerManagerScript;
+	zombiePathfinder zombiePathFinderScript;
 	Transform playerPosition;
 
 	float distanceFromPlayer, attackDistance;
@@ -48,7 +49,7 @@ public class zombieManager : MonoBehaviour
 	private void Update()
 	{
 		distanceFromPlayer = Vector3.Distance(playerPosition.transform.position, transform.position);
-
+		zombiePathFinderScript = gameObject.GetComponent<zombiePathfinder>();
 		zombieAttack();
 		zombieHit();
 	}
@@ -59,12 +60,12 @@ public class zombieManager : MonoBehaviour
 		if (distanceFromPlayer < attackDistance)
 		{
 			hasToAttack = true;
-			this.zombiePathFinderScript.zombieSpeed = 0;
+			gameObject.GetComponent<NavMeshAgent>().speed = 0;
 		}
 
 		if (hasToAttack && zombieAnimationScript.zombieAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && !zombieAnimationScript.zombieAnimator.IsInTransition(0) && zombieAnimationScript.zombieAnimator.GetCurrentAnimatorStateInfo(0).IsName("attack"))
 		{ //if animation "attack" has finished.
-			this.zombiePathFinderScript.zombieSpeed = this.zombiePathFinderScript.defaultZombieSpeed;
+			gameObject.GetComponent<NavMeshAgent>().speed = zombiePathFinderScript.defaultZombieSpeed; //note that the speed is being reset.
 			hasToAttack = false;
 		}
 	}
@@ -132,7 +133,8 @@ public class zombieManager : MonoBehaviour
 			bloodPS.layer = bloodFXArray;
 			bloodChild1.layer = bloodFXArray;
 			bloodChild2.layer = bloodFXArray;
-		} else if (hide_show == 1)
+		}
+		else if (hide_show == 1)
 		{
 			bloodPS.layer = 0; //default layer
 			bloodChild1.layer = 0;

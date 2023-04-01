@@ -13,7 +13,7 @@ public class playerManager : MonoBehaviour
 	GameObject groundCheck, ceilingCheck;
 	CharacterController characterController;
 
-	public Animator cameraDie;
+	Animator cameraDie;
 	Vector3 bottomOfCharacterController, topOfCharacterController;
 
 	private void Start()
@@ -26,9 +26,12 @@ public class playerManager : MonoBehaviour
 		playerMovementScript = player.GetComponent<playerMovement>();
 		gameManagerScript = gameManager.GetComponent<gameManager1>();
 		cameraMovementScript = camera1.GetComponent<cameraMovement>();
+		cameraDie = camera1.GetComponent<Animator>();
 		groundCheck = GameObject.Find("groundCheck");
 		ceilingCheck = GameObject.Find("ceilingCheck");
 		characterController = player.GetComponent<CharacterController>();
+
+
 	}
 
 	private void Update()
